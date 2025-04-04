@@ -12,3 +12,4 @@ finish
 500
 patch
 regist
+pr test
