@@ -80,3 +80,29 @@ addPoints(0.34, 0.226)    // 0.566
 addPoints(10.34, 200.226) // 210.566
 addPoints(0.143, -10.28)  // -10.137
 addPoints(0.143, -10)     // -9.857
+
+console.log('----------------------------------');
+
+const prices = [10.34, 'xxx', 5.678,null, 20.9, 1.005,0,19,undefined,0.5];
+let result = 0;
+let count = 0;
+for(let i = 0; i<prices.length; i++){
+    if(typeof prices[i]=='number'){
+        result+=prices[i];
+        count++;
+    }
+}
+
+console.log(`avg: ${Math.round((result/count)*100)/100}`);
+// const sum = prices
+//             .filter(item => typeof item==="number")
+//             .reduce((result, val) => {
+//                     result.sum +=val;
+//                     result.count+=1;
+//                     return result;
+//                     },
+//                     {sum: 0, count:0}
+//             );
+
+// console.log(`1. avg: ${Math.round((sum.sum/sum.count) * 100)/100}`)
+
