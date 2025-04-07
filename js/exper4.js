@@ -10,7 +10,7 @@ const prices = [
   undefined,
   '0.5',
 ];
-const P = 10 * 10;
+const P = 10 ** 10;
 const PointLength = 10 ** 2;
 let sum = 0;
 let cnt = 0;
