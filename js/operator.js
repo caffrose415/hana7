@@ -27,11 +27,7 @@ console.log(x,x++,x,++x);
 
 console.log('----------------------------------------');
 for(let i = 0.1; i<1; i+=0.1) {
-    if(i.toFixed(1)>0.99){
-        console.log(Math.ceil(i));
-    }else{
-        console.log(+i.toFixed(1));
-    }
+    console.log(+i.toFixed(1));
 }
 
 console.log('-----------------------------------------');
@@ -64,7 +60,20 @@ function addPoints(a,b){
 
     console.log((a+b).toFixed(len));
 }
+console.log('-------------------------------------');
+function addPoints(...args){
+    p = 10 *10;
+    let ret = 0;
+    for(const n of args){
+        ret += Math.trunc(n*p);
+    }
+    ret = ret/p;
+    console.log(" addPoints ret:", ret)
+    
 
+}
+
+addPoints(0.21354,0.1,0.2)
 addPoints(0.21354, 0.1)   // 0.31354
 addPoints(0.14, 0.28)     // 0.42
 addPoints(0.34, 0.226)    // 0.566
