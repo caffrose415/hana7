@@ -83,7 +83,7 @@ addPoints(0.143, -10)     // -9.857
 
 console.log('----------------------------------');
 
-const prices = [10.34, 'xxx', 5.678,null, 20.9, 1.005,0,19,undefined,0.5];
+const prices = [10.34, 'xxx', 5.678,null, 20.9, 1.005,0,18,undefined,0.5];
 let result = 0;
 let count = 0;
 for(let i = 0; i<prices.length; i++){
