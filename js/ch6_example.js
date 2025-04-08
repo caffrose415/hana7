@@ -1,3 +1,5 @@
+'use strict'
+
 console.log('-----------------------');
 
 const user = {id:1, name:'Hong', addr:{city:'Seoul'}};
