@@ -1,3 +1,5 @@
+const assert = require("assert");
+
 function makeArray(n) {
     if (n === 1) {
         return [1];
@@ -32,3 +34,7 @@ console.log("-------------------------");
 
 console.log(makeArrayTCO(10));
 console.log(makeReverseArrayTCO(10));
+
+console.log("-------------");
+assert.deepEqual(makeArray(10), [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+assert.deepEqual(makeArray(10), [1, 2, 3, 4, 5, 6, 7, 8, 9]);
