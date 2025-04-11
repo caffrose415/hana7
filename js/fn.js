@@ -24,21 +24,18 @@ obj.bark();
 obj.bark2();
 
 const expressFn = function (name) {
-    // if, 'use strict' ?
-    "use strict";
-    if (this?.name) this.name = name;
-    console.log(new.target, this?.name, name);
+    console.log("efn -->", this.name, name, this instanceof expressFn);
 };
 
 const arrowFn = (name) => {
-    this.name = name;
-    console.log(this, this.name, name);
+    console.log("afn -->", this, this.name, name);
 };
 
-expressFn.bind({})("expfn");
-arrowFn("afn");
+const hong = { id: 1, name: "Hong" };
+const kim = { id: 2, name: "Kim" };
 
-const dfn = new expressFn("D");
+expressFn.bind(hong)("expfn");
+arrowFn.bind(kim)("afn");
 //   const afn = new arrowFn('A'); // error!
 
 console.log("----------------------------");
@@ -58,3 +55,47 @@ lucy.bark(); // ?
 lucy.bark2(); // ?
 console.log("dog type=", typeof dog); // ?
 console.log("lucy type=", typeof lucy); // ?
+
+console.log("------------------------");
+this.name = "Module Name";
+globalThis.name = "GlobalName";
+const Cat = (name) => {
+    console.log("Cat>>", this);
+    this.name = name;
+
+    this.bark = function () {
+        console.log("bark=", new.target, this.name, name);
+    };
+
+    this.bark2 = () => console.log("bark2=", this.name, name);
+
+    return this;
+};
+
+const cat = Cat("Coco");
+console.log("##########", cat, this);
+// const cat = new Cat(''); // error!!
+cat.bark(); // ?
+// cat.bark2(); // ?
+// Cat().bark(); // ?
+// console.log("type=", typeof cat); // ?
+
+console.log("---------------------");
+
+const o1 = Object.assign({}, obj);
+const o2 = Object.create(obj);
+Object.prototype.xxx = "XXX";
+Array.prototype.xxx = function () {
+    return this.length ** 2;
+};
+console.log(" o1:", o1);
+console.log(" o2:", o2);
+
+const arr = [1, 2, 3];
+console.log(" arr:", arr);
+
+Array.prototype.firstObject = function () {
+    return this[0];
+};
+const fo = arr.firstObject();
+console.log(" fo:", fo);
