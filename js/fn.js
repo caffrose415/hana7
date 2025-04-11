@@ -99,3 +99,48 @@ Array.prototype.firstObject = function () {
 };
 const fo = arr.firstObject();
 console.log(" fo:", fo);
+
+console.log("------------------------------------");
+
+const debounce = (cb, delay) => {
+    let timer;
+    return (...args) => {
+        if (timer) {
+            clearTimeout(timer);
+        }
+        timer = setTimeout(cb, delay, ...args);
+    };
+};
+
+const throttle = (cb, delay) => {
+    let timer;
+    return (...args) => {
+        if (timer) {
+            return;
+        }
+        timer = setTimeout(cb, delay, ...args);
+        timer = null;
+    };
+};
+
+Array.prototype.mapx = function (f) {
+    const results = [];
+    for (let i = 0; i < this.length; i++) {
+        results[i] = f(this[i], i, this);
+    }
+    return results;
+};
+const farr = [1, 2, 3, 4];
+const rets = farr.mapx((a, i) => console.log(a, i, a * i));
+console.log(" rets:", rets);
+
+const roots = farr.mapx(Math.sqrt);
+console.log(" roots:", roots);
+
+const unary = (f) => (f.length === 1 ? f : (arg) => f(arg));
+
+const sarr = ["11", "22", "33", "44", "55"];
+const sresults = sarr.mapx(parseInt);
+console.log(" sresults:", sresults);
+const sresults2 = sarr.mapx(unary(parseInt));
+console.log(" sresults2:", sresults2);
