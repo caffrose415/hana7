@@ -60,11 +60,11 @@ users = [Kim, Lee, Park];
 const addUser = (name) => [...users, name];
 console.log(addUser(Hong));
 
-const removeUser = (name) => users.filter((a) => a !== name);
+const removeUser = ({ id: pid }) => users.filter(({ id }) => id !== pid);
 console.log(removeUser(Lee));
 
-const changeUser = (beforeName, afterName) => {
-    return users.map((user) => (user === beforeName ? afterName : user));
+const changeUser = ({ id: fromId }, to) => {
+    return users.map((user) => (user.id === fromId ? to : user));
 };
 console.log(changeUser(Kim, Choi));
 
@@ -73,10 +73,10 @@ console.log("---------------------------------------");
 arr.push(true);
 console.log(arr);
 
-const ret1 = arr.map((n) => String(n));
+const ret1 = arr.map(String);
 console.log(ret1);
 
-const classNames = (...args) => args.filter((a) => !!a).join(" ");
+const classNames = (...args) => args.filter(Boolean).join(" ");
 const ret2 = classNames("", "a b c", "d", "", "e");
 console.log(ret2);
 
@@ -108,8 +108,22 @@ console.log(reduce([3, 3, 3], (a, b) => a * b, 0));
 
 console.log("-------------------------");
 arr = [1, 2, 3, 4, 5];
-const square = (arr) => arr.map((a) => a ** 2);
-const sqrt = (arr) => arr.map((a) => Math.sqrt(a));
-const cube = (arr) => arr.map((a) => a ** 3);
+const square = (n) => n ** 2;
+const sqrt = Math.sqrt;
+const cube = (n) => n ** 3;
 
-console.log(cube(sqrt(square(arr))));
+const xr1 = arr.map(square).map(sqrt).map(cube);
+assert.deepStrictEqual(xr1, [1, 8, 27, 64, 125]);
+
+const xr2 = arr.map((a) =>
+    [square, sqrt, cube].reduce((acc, fn) => fn(acc), a)
+);
+console.log("🚀  xr2:", xr2);
+const xr3 = arr.map((a) =>
+    [cube, square, sqrt].reduce((acc, fn) => fn(acc), a)
+);
+console.log("🚀  xr3:", xr3);
+const xr4 = arr.map((a) =>
+    [square, cube, (n) => n + 1].reduce((acc, fn) => fn(acc), a)
+);
+console.log("🚀  xr4:", xr4);
