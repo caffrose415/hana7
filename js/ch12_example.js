@@ -60,11 +60,11 @@ users = [Kim, Lee, Park];
 const addUser = (name) => [...users, name];
 console.log(addUser(Hong));
 
-const removeUser = (name) => users.filter((a) => a !== name);
+const removeUser = ({ id: pid }) => users.filter(({ id }) => id !== pid);
 console.log(removeUser(Lee));
 
-const changeUser = (beforeName, afterName) => {
-    return users.map((user) => (user === beforeName ? afterName : user));
+const changeUser = ({ id: fromId }, to) => {
+    return users.map((user) => (user.id === fromId ? to : user));
 };
 console.log(changeUser(Kim, Choi));
 
@@ -73,10 +73,10 @@ console.log("---------------------------------------");
 arr.push(true);
 console.log(arr);
 
-const ret1 = arr.map((n) => String(n));
+const ret1 = arr.map(String);
 console.log(ret1);
 
-const classNames = (...args) => args.filter((a) => !!a).join(" ");
+const classNames = (...args) => args.filter(Boolean).join(" ");
 const ret2 = classNames("", "a b c", "d", "", "e");
 console.log(ret2);
 
@@ -108,8 +108,75 @@ console.log(reduce([3, 3, 3], (a, b) => a * b, 0));
 
 console.log("-------------------------");
 arr = [1, 2, 3, 4, 5];
-const square = (arr) => arr.map((a) => a ** 2);
-const sqrt = (arr) => arr.map((a) => Math.sqrt(a));
-const cube = (arr) => arr.map((a) => a ** 3);
+const square = (n) => n ** 2;
+const sqrt = Math.sqrt;
+const cube = (n) => n ** 3;
 
-console.log(cube(sqrt(square(arr))));
+const xr1 = arr.map(square).map(sqrt).map(cube);
+assert.deepStrictEqual(xr1, [1, 8, 27, 64, 125]);
+
+const xr2 = arr.map((a) =>
+    [square, sqrt, cube].reduce((acc, fn) => fn(acc), a)
+);
+console.log("🚀  xr2:", xr2);
+const xr3 = arr.map((a) =>
+    [cube, square, sqrt].reduce((acc, fn) => fn(acc), a)
+);
+console.log("🚀  xr3:", xr3);
+const xr4 = arr.map((a) =>
+    [square, cube, (n) => n + 1].reduce((acc, fn) => fn(acc), a)
+);
+console.log("🚀  xr4:", xr4);
+
+console.log("--------------------------------------");
+
+const range = (start, end, step = start > end ? -1 : 1) => {
+    if (step === 0 || start === end) return [start];
+
+    if ((start - end) * step > 0) return [];
+
+    if (end === undefined && start === 0) return 0;
+
+    const t = start;
+    end = end ?? (start > 0 ? ((start = 1), t) : -1);
+
+    let result = [];
+    for (let i = start; start > end ? i >= end : i <= end; i += step) {
+        result.push(i);
+    }
+
+    return result;
+};
+
+console.log(range(1, 10, 1));
+console.log(range(1, 10, 2));
+console.log(range(10, 1));
+console.log(range(100));
+console.log(range(5, 5));
+console.log(range(1, 5, -1));
+console.log(range(-3, 0));
+
+console.log("------------------------------------");
+
+function keyPaironSquare(arr, sum) {
+    for (let i = 0; i < arr.length; i++) {
+        for (let j = i + 1; j < arr.length; j++) {
+            if (arr[i] + arr[j] === sum) {
+                return [i, j];
+            }
+        }
+    }
+}
+
+const keyPair = (arr, sum) => {
+    const cache = {};
+    for (let i = 0; i < arr.length; i++) {
+        const value = arr[i];
+        if (cache[value]) return [cache[value], i];
+        cache[sum - value] = i;
+    }
+};
+assert.deepStrictEqual(keyPair([1, 3, 4, 5], 7), [1, 2]);
+assert.deepStrictEqual(keyPair([1, 4, 45, 6, 10, 8], 16), [3, 4]);
+assert.deepStrictEqual(keyPair([1, 2, 4, 3, 6], 10), [2, 4]);
+assert.deepStrictEqual(keyPair([1, 2, 3, 4, 5, 7], 9), [3, 4]);
