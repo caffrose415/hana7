@@ -61,12 +61,8 @@ console.log(" low:", low);
 console.log("-------------------------------------");
 //ex2
 const swapCase = (str) =>
-    str
-        .replace(/[A-Z]/g, (foundStr) => foundStr.toLowerCase())
-        .replace(/[a-z]/g, (foundStr) => foundStr.toUpperCase());
+    str.replace(/[A-Za-z]/g, (foundStr) => foundStr>='A' && foundStr<='Z' ? foundStr.toLowerCase() : foundStr.toUpperCase());
 
-console.log(swapCase("Senior Coding Learning JS"));
-console.log(swapCase("Hanaro 4 Class"));
 assert.equal(
     swapCase("Senior Coding Learning JS"),
     "sENIOR cODING lEARNING js"
@@ -77,13 +73,20 @@ console.log("-------------------------------------");
 
 //ex3
 
-// const telfmt = (str) => str.replace(/(\d{2,4})(\d{3,4})(\d{4})?$/, "$1-$2-$3");
+const telfmt = (str) => {
+  if (str.length === 8) return str.replace(/(\d{4})(\d{4})/, "$1-$2");
+  else if(str.length===11)return str.replace(/^(\d{3})(\d{4})(\d{4})$/, "$1-$2-$3");
+  else if((str.length===10 || str.length===9) && str.startsWith('02')) return str.replace(/^(\d{2})(\d{3,4})(\d{4})$/, "$1-$2-$3");
+  else if(str.length===10) return str.replace(/^(\d{3})(\d{3})(\d{4})$/, "$1-$2-$3");
+  else return str.replace(/^(\d{4})(\d{4})(\d{4})$/,"$1-$2-$3");
+};
 
-// assert.deepStrictEqual(telfmt("0101234567"), "010-123-4567");
-// assert.deepStrictEqual(telfmt("01012345678"), "010-1234-5678");
-// assert.deepStrictEqual(telfmt('0212345678'), '02-1234-5678');
-// assert.deepStrictEqual(telfmt('021234567'), '02-123-4567');
-// assert.deepStrictEqual(telfmt('0331234567'), '033-123-4567');
-// assert.deepStrictEqual(telfmt('15771577'), '1577-1577');
-// assert.deepStrictEqual(telfmt('07012341234'), '070-1234-1234');
-// assert.deepStrictEqual(telfmt('050712345678'), '0507-1234-5678');
+
+assert.deepStrictEqual(telfmt("0101234567"), "010-123-4567");
+assert.deepStrictEqual(telfmt("01012345678"), "010-1234-5678");
+assert.deepStrictEqual(telfmt('0212345678'), '02-1234-5678');
+assert.deepStrictEqual(telfmt('021234567'), '02-123-4567');
+assert.deepStrictEqual(telfmt('0331234567'), '033-123-4567');
+assert.deepStrictEqual(telfmt('15771577'), '1577-1577');
+assert.deepStrictEqual(telfmt('07012341234'), '070-1234-1234');
+assert.deepStrictEqual(telfmt('050712345678'), '0507-1234-5678');
