@@ -54,18 +54,21 @@ console.log("-----------------------------------");
 
 //ex1
 const upperToLower = (str) =>
-    str.replace(/[A-Z]/g, (foundStr) => foundStr.toLowerCase());
+    str.replace(/[A-Z]+/g, (foundStr) => foundStr.toLowerCase());
 const low = upperToLower("Senior Coding Learning JS");
 console.log(" low:", low);
 
 console.log("-------------------------------------");
 //ex2
 const swapCase = (str) =>
-    str.replace(/[A-Za-z]/g, (foundStr) => foundStr>='A' && foundStr<='Z' ? foundStr.toLowerCase() : foundStr.toUpperCase());
+    str?.replace(/([A-Z\s]*)([a-z\s]*)/g, (foundStr, upper, lower) => {
+        console.log(foundStr);
+        return `${upper.toLowerCase()}${lower.toUpperCase()}`;
+    });
 
 assert.equal(
-    swapCase("Senior Coding Learning JS"),
-    "sENIOR cODING lEARNING js"
+    swapCase("abc Senior abc Coding Learning JS"),
+    "ABC sENIOR ABC cODING lEARNING js"
 );
 assert.equal(swapCase("Hanaro 4 Class"), "hANARO 4 cLASS");
 
@@ -74,19 +77,31 @@ console.log("-------------------------------------");
 //ex3
 
 const telfmt = (str) => {
-  if (str.length === 8) return str.replace(/(\d{4})(\d{4})/, "$1-$2");
-  else if(str.length===11)return str.replace(/^(\d{3})(\d{4})(\d{4})$/, "$1-$2-$3");
-  else if((str.length===10 || str.length===9) && str.startsWith('02')) return str.replace(/^(\d{2})(\d{3,4})(\d{4})$/, "$1-$2-$3");
-  else if(str.length===10) return str.replace(/^(\d{3})(\d{3})(\d{4})$/, "$1-$2-$3");
-  else return str.replace(/^(\d{4})(\d{4})(\d{4})$/,"$1-$2-$3");
+    const len = str?.length ?? 0;
+    if (len <= 7) return str;
+
+    if (len === 8) return `${str.substring(0, 4)}-${str.substring(4)}`;
+
+    let a = str.startsWith("02") ? 2 : len > 10 ? len - 8 : 3;
+    let b = len - a - 4;
+    const reg = new RegExp(`(\\d{${a}})(\\d{${b}})(\\d{4})`);
+
+    return str.replace(reg, "$1-$2-$3");
 };
 
-
+// if (str.length === 8) return str.replace(/(\d{4})(\d{4})/, "$1-$2");
+// else if (str.length === 11)
+//     return str.replace(/^(\d{3})(\d{4})(\d{4})$/, "$1-$2-$3");
+// else if ((str.length === 10 || str.length === 9) && str.startsWith("02"))
+//     return str.replace(/^(\d{2})(\d{3,4})(\d{4})$/, "$1-$2-$3");
+// else if (str.length === 10)
+//     return str.replace(/^(\d{3})(\d{3})(\d{4})$/, "$1-$2-$3");
+// else return str.replace(/^(\d{4})(\d{4})(\d{4})$/, "$1-$2-$3");
 assert.deepStrictEqual(telfmt("0101234567"), "010-123-4567");
 assert.deepStrictEqual(telfmt("01012345678"), "010-1234-5678");
-assert.deepStrictEqual(telfmt('0212345678'), '02-1234-5678');
-assert.deepStrictEqual(telfmt('021234567'), '02-123-4567');
-assert.deepStrictEqual(telfmt('0331234567'), '033-123-4567');
-assert.deepStrictEqual(telfmt('15771577'), '1577-1577');
-assert.deepStrictEqual(telfmt('07012341234'), '070-1234-1234');
-assert.deepStrictEqual(telfmt('050712345678'), '0507-1234-5678');
+assert.deepStrictEqual(telfmt("0212345678"), "02-1234-5678");
+assert.deepStrictEqual(telfmt("021234567"), "02-123-4567");
+assert.deepStrictEqual(telfmt("0331234567"), "033-123-4567");
+assert.deepStrictEqual(telfmt("15771577"), "1577-1577");
+assert.deepStrictEqual(telfmt("07012341234"), "070-1234-1234");
+assert.deepStrictEqual(telfmt("050712345678"), "0507-1234-5678");
