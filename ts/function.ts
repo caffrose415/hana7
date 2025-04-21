@@ -68,3 +68,29 @@ singer = function (song) {
 
 const arr3 = [1, 2, 3];
 arr3.map((a, i) => a + i);
+
+function ff(params: number): void {
+    console.log('ff');
+    return undefined;
+}
+
+const rf1 = ff(1);
+console.log('🚀 ~ rf1:', rf1);
+
+type F = () => void;
+const f5: F = () => {};
+const f6: Function = (n: string) => {};
+const obj2: Object = {};
+
+function tfn(this: { id: number }, x: string) {
+    console.log('tfn>> ', this.id, x);
+}
+
+function nfn(this: void, x: string) {
+    console.log('tfn>> ', x);
+}
+
+tfn.bind({ id: 1 })('X');
+//tfn.call({ id: 1 });
+
+nfn('Y');
