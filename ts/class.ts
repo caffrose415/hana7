@@ -154,3 +154,5 @@ const f1 = (value: number | string | boolean | [string, number]) => {
         console.log(value.toUpperCase());
     }
 };
+
+export {};
