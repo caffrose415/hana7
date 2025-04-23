@@ -9,6 +9,7 @@ interface Dept {
     captain: string;
 }
 interface Ud2 {
+    id: number; // 안써도 되지만, 공통으로 들어가는건 써주자
     [x: string]: number | string;
     addr: string;
 }
