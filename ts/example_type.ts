@@ -1,6 +1,6 @@
-console.log('------------1------------');
 const isStringNumber = (value: unknown): value is [string, number] =>
     Array.isArray(value) &&
+    // value.length >= 2 &&
     typeof value[0] === 'string' &&
     typeof value[1] === 'number';
 
@@ -13,34 +13,27 @@ const f1 = (value: number | string | boolean | [string, number]) => {
 f1(['item', 1000]);
 
 interface Animal {}
-
 interface Dog extends Animal {
     name: string;
 }
-
 interface Cat extends Animal {
     punch(): void;
 }
-
 class Retriever implements Dog {
-    constructor(public name: string = 'Maxx') {}
+    constructor(public name: string) {}
 }
 
 function isDog(a: Animal): a is Dog {
     return 'name' in a && typeof a.name === 'string';
 }
 
-console.log('------------2------------');
+const maxx: Dog = { name: 'Maxx' };
+if (isDog(maxx)) console.log(maxx.name, 'is Dog!');
 
-const cart = {
-    X: 1,
-    Y: 2,
-    Z: 3,
-};
+const gunhee = new Retriever('Gunhee');
+if (isDog(gunhee)) console.log(gunhee.name, 'is Dog!');
 
-type T1 = 'X' | 'Y' | 'Z';
-type T2 = keyof typeof cart;
-
+// ---------------------------
 const constCart = {
     X: 1,
     Y: 2,
@@ -48,33 +41,41 @@ const constCart = {
 } as const;
 
 type T3 = 1 | 2 | 3;
-type T4 = (typeof constCart)[keyof typeof constCart];
+type ConstCart = typeof constCart;
+// type T4 = typeof constCart[keyof typeof constCart];
+type T4 = ConstCart[keyof ConstCart];
 
-console.log('------------3------------');
-interface ErrorWithMessage {
+const xCart = { x: 1, y: 'str' } as const;
+type XCart = typeof xCart;
+type T5 = XCart[keyof XCart];
+
+type ValueOf<T> = T[keyof T];
+type T44 = ValueOf<typeof constCart>;
+type T55 = ValueOf<typeof xCart>;
+
+interface IErrorWithMessage {
     message: string;
 }
 
-const isErrorWithMessage = (error: unknown): error is ErrorWithMessage =>
+const isErrorWithMessage = (error: unknown): error is IErrorWithMessage =>
     typeof error === 'object' &&
     error !== null &&
     'message' in error &&
     typeof error.message === 'string';
+// (error as Record<string, unknown>).message === 'string'
 
 const toErrorWithMessage = (error: unknown) =>
     isErrorWithMessage(error) ? error : new Error(JSON.stringify(error));
 
 try {
-    throw new Error('some error!!!!');
-    //throw 'some string error!!!';
-    //throw ['some', 'array', 'error'];
+    // throw new Error('some error!!!!');   // 가
+    // throw 'some string error!!!';        // 나
+    throw ['some', 'array', 'error']; // 다
 } catch (error) {
-    const { message } = toErrorWithMessage(error);
-    console.log('error>> ', message);
+    console.log(toErrorWithMessage(error).message); // (라)
 }
 
-console.log('------------4------------');
-
+// -----------------------------------
 type TPropertyKeyType = string | number | symbol;
 type TUser = { [key: string]: string | number };
 
@@ -89,17 +90,19 @@ function deleteArray(
         }
         return arr.slice(0, startOrKey);
     }
+
     if (typeof startOrKey === 'string') {
-        if (endOrValue !== undefined) {
-            return arr.filter((e) => {
-                if (e && typeof e === 'object') {
-                    return e[startOrKey] !== endOrValue;
-                }
-            });
-        }
+        console.log('🚀 startOrKey:', startOrKey);
+        return arr.filter((e) => {
+            if (e && typeof e === 'object') {
+                return e[startOrKey] !== endOrValue;
+            }
+        });
     }
+
     if (typeof startOrKey === 'symbol') {
     }
+
     return [];
 }
 
