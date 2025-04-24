@@ -10,6 +10,8 @@ const f1 = (value: number | string | boolean | [string, number]) => {
     }
 };
 
+f1(['item', 1000]);
+
 interface Animal {}
 
 interface Dog extends Animal {
@@ -25,7 +27,7 @@ class Retriever implements Dog {
 }
 
 function isDog(a: Animal): a is Dog {
-    return (a as Dog).name !== undefined;
+    return 'name' in a;
 }
 
 console.log('------------2------------');
