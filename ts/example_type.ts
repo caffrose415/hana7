@@ -27,7 +27,7 @@ class Retriever implements Dog {
 }
 
 function isDog(a: Animal): a is Dog {
-    return 'name' in a;
+    return 'name' in a && typeof a.name === 'string';
 }
 
 console.log('------------2------------');
@@ -91,8 +91,10 @@ function deleteArray(
     }
     if (typeof startOrKey === 'string') {
         if (endOrValue !== undefined) {
-            return (arr as TUser[]).filter((e) => {
-                return e[startOrKey as string] !== endOrValue;
+            return arr.filter((e) => {
+                if (e && typeof e === 'object') {
+                    return e[startOrKey] !== endOrValue;
+                }
             });
         }
     }
