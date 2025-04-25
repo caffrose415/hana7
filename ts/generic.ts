@@ -1,4 +1,6 @@
-class Factory<T> {
+import { jadeX } from 'jade';
+
+export class Factory<T> {
     protected products: T[];
 
     constructor(product: T) {
@@ -139,5 +141,6 @@ type XO = keyof IUser & keyof IDept;
 type XO2 = { id: number } & { name: string };
 
 const xo2: XO2 = { id: 1, name: 'Hong' };
+const xxx = jadeX;
 
 export {};

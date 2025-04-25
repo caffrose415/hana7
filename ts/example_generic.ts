@@ -1,3 +1,7 @@
+import { Factory } from './generic';
+
+import Data from './data.json';
+
 interface IUser {
     id: number;
     age: number;
@@ -25,7 +29,7 @@ type ItemPrice<T, U> = {
     [x in keyof T]: x extends 'item' ? keyof U : T[x];
 };
 
-const stock = { X: 1, Y: 2, Z: 30 } as const;
+const stock = { X: 1, Y: 2, Z: 30 };
 
 const itemPrices: ItemPrice<Item, typeof stock>[] = [
     { item: 'X', price: 1000 },
@@ -40,13 +44,10 @@ const total = itemPrices.reduce(
 
 //-------------------------------------------------------------------------
 
-type TPropertyKeyType = string | number | symbol;
-type TUser = { [key: string]: string | number };
-
 function deleteArray<T>(
-    arr: TUser[] | number[],
-    startOrKey: TPropertyKeyType,
-    endOrValue?: unknown
+    arr: T[],
+    startOrKey: number | keyof T,
+    endOrValue?: number | T[keyof T]
 ) {
     if (typeof startOrKey === 'number') {
         if (typeof endOrValue === 'number') {
@@ -65,3 +66,26 @@ function deleteArray<T>(
 
     return [];
 }
+
+const arr = [1, 2, 3, 4];
+console.log(deleteArray(arr, 2)); // [1, 2]
+console.log(deleteArray(arr, 1, 3)); // [1, 4]
+console.log(arr); // [1, 2, 3, 4]
+
+const users = [
+    { id: 1, name: 'Hong' },
+    { id: 2, name: 'Kim' },
+    { id: 3, name: 'Lee' },
+];
+
+console.log(deleteArray(users, 2)); // [Hong, Kim]
+console.log(deleteArray(users, 1, 2)); // [Hong, Lee]
+console.log(deleteArray(users, 'id', 2)); // [Hong, Lee]
+console.log(deleteArray(users, 'name', 'Lee')); // [Hong, Kim]
+
+//--------------------------------------------------------------------------------------
+
+let x: Hana7 = { id: 1, name: 'Hong' };
+let ft: Factory<string>;
+
+export {};
