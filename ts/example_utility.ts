@@ -13,12 +13,13 @@ interface IDept {
     captain: string;
 }
 
-type CombineExclude<T, U, E extends keyof any> = {
-    [K in Exclude<keyof (T & U), E>]: K extends keyof T & keyof U
-        ? T[K] | U[K]
-        : (T & U)[K];
-};
+type Combine<T,U> = {
+    [k in keyof (T&U)]: k extends (keyof T & keyof U)? T[k] |U[k]:(T&U)[k];
+}
 
+type CombineExclude<T,U,E extends keyof Combine<T,U>> = {
+    [k in Exclude<keyof Combine<T,U>,E>]: Combine<T,U>[k];
+}
 type ICombineExclude = CombineExclude<IUser, IDept, 'name' | 'dname'>;
 
 let combineExclude: ICombineExclude = {
