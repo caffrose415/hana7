@@ -13,13 +13,12 @@ interface IDept {
     captain: string;
 }
 
-type Combine<T,U> = {
-    [k in keyof (T&U)]: k extends (keyof T & keyof U)? T[k] |U[k]:(T&U)[k];
-}
+type CombineExclude<T, U, E extends keyof any> = {
+    [K in Exclude<keyof (T & U), E>]: K extends keyof T & keyof U
+        ? T[K] | U[K]
+        : (T & U)[K];
+};
 
-type CombineExclude<T,U,E extends keyof Combine<T,U>> = {
-    [k in Exclude<keyof Combine<T,U>,E>]: Combine<T,U>[k];
-}
 type ICombineExclude = CombineExclude<IUser, IDept, 'name' | 'dname'>;
 
 let combineExclude: ICombineExclude = {
@@ -41,25 +40,28 @@ const newUser2 = registUserObj(paramObj);
 console.log('🚀  newUser2:', newUser2);
 
 //3333333333333333333333333333333333333333333333333333333
-function debounce(cb: Function, delay: number) {
-    let timer: any;
+const debounce = <T extends (...args: Parameters<T>) => ReturnType<T>>(
+    cb: T,
+    delay: number = 1
+) => {
+    let timer: ReturnType<typeof setTimeout>;
 
-    return (...args: any[]) => {
+    return (...args: Parameters<T>) => {
         if (timer) clearTimeout(timer);
         timer = setTimeout(cb, delay, ...args);
     };
-}
+};
 
-function throttle(cb: Function, delay: number) {
-    let timer: any;
-    return (...args: any[]) => {
+const throttle = <T>(cb: (...args: T[]) => any, delay: number = 1) => {
+    let timer: ReturnType<typeof setTimeout> | null;
+    return (...args: T[]) => {
         if (timer) return;
         timer = setTimeout(() => {
             cb(...args);
             timer = null;
         }, delay);
     };
-}
+};
 
 // test
 const debo = debounce((a: number, b: string) => console.log(a + 1, b), 1000);
@@ -69,18 +71,4 @@ const thro = throttle((a: number) => console.log(a + 1), 1000);
 for (let i = 10; i < 15; i++) thro(i); // 11
 
 //44444444444444444444444444444444444444444444444444444444444
-function memoized() {
-    let dp: {};
-
-    function fn(a: number, b: number) {
-        return dp[aa+b;
-    }
-}
-
-const memoizeAdd = memoized((a: number, b: number) => {
-    return a + b;
-  });
-  
-  console.log(memoizeAdd(1, 2))); // 3
-  console.log(memoizeAdd(3, 4))); // 7
 export {};
