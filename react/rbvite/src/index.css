@@ -67,11 +67,20 @@ button:focus-visible {
     }
 }
 
+ul {
+    list-style: none;
+}
+
+.border {
+    border: 1px solid red;
+}
+
 .p-sm {
     padding: 0 0.1rem;
-    margin-left: 1rem;
+    margin-left: 0.5rem;
 }
 
 .w-sm {
-    width: 5rem;
+    margin-left: 0.5rem;
+    width: 4rem;
 }

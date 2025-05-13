@@ -1,15 +1,19 @@
+import type { RefObject } from 'react';
 import type { LoginUser } from '../App';
 
 type Props = {
     loginUser: LoginUser | null;
     logout: () => void;
+    logoutButtonRef: RefObject<HTMLButtonElement | null>;
 };
 
-export default function Profile({ loginUser, logout }: Props) {
+export default function Profile({ loginUser, logout, logoutButtonRef }: Props) {
     return (
         <>
             <h3>LoginUser: {loginUser?.name}</h3>
-            <button onClick={logout}>LogOut</button>
+            <button ref={logoutButtonRef} onClick={logout}>
+                LogOut
+            </button>
         </>
     );
 }
