@@ -1,5 +1,13 @@
-import { useImperativeHandle, useRef, useState, type FormEvent } from 'react';
+import {
+    useEffect,
+    useImperativeHandle,
+    useRef,
+    useState,
+    type FormEvent,
+} from 'react';
 import { useSession } from '../contexts/session/SessionContext';
+import { useCounter } from '../contexts/counter/useCounter';
+import { useInterval, useTimeout } from '../hooks/useTimer';
 
 export type LoginHandler = {
     str: string;
@@ -11,6 +19,7 @@ export type LoginHandler = {
 
 export default function Login() {
     const { login, loginHandler: loginHandlerRef } = useSession();
+    const { plusCount, minusCount } = useCounter();
     const [x, setX] = useState(0);
     const idRef = useRef<HTMLInputElement>(null);
     const nameRef = useRef<HTMLInputElement>(null);
@@ -53,6 +62,18 @@ export default function Login() {
 
         login(id, name);
     };
+
+    useEffect(() => {
+        plusCount();
+        return minusCount;
+    }, []);
+
+    // useTimeout(console.log, 1000, 'Hong', x);
+    useTimeout(console.log, 1000, 'Kim', 99);
+
+    // // interval도 만들었다면,
+    useInterval(setX, 1000, x + 1);
+    // useInterval(console.log, 1000, x);
 
     return (
         <form onSubmit={makeLogin}>

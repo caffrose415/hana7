@@ -1,8 +1,9 @@
 import Login from './Login';
 import Profile from './Profile';
 import Item from './Item';
-import { useState, type RefObject } from 'react';
+import { type RefObject } from 'react';
 import { useSession } from '../contexts/session/SessionContext';
+import { useToggle } from '../hooks/useToggle';
 
 type Props = {
     logoutButtonRef: RefObject<HTMLButtonElement | null>;
@@ -13,8 +14,10 @@ export default function My({ logoutButtonRef }: Props) {
         session: { loginUser, cart },
     } = useSession();
 
-    const [isAdding, setAdding] = useState(false);
-    const toggleAdding = () => setAdding(!isAdding);
+    // const [isAdding, setAdding] = useState(false);
+    // const toggleAdding = () => setAdding(!isAdding);
+
+    const [isAdding, toggleAdding] = useToggle();
 
     return (
         <>
@@ -39,7 +42,7 @@ export default function My({ logoutButtonRef }: Props) {
                             />
                         </li>
                     ) : (
-                        <button onClick={() => setAdding(true)}>ADD</button>
+                        <button onClick={() => toggleAdding()}>ADD</button>
                     )}
                 </ul>
             </div>
