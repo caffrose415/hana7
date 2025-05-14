@@ -46,7 +46,7 @@ const debounce = <T extends (...args: Parameters<T>) => ReturnType<T>>(
 ) => {
     let timer: ReturnType<typeof setTimeout>;
 
-    return (...args: Parameters<T>) => {
+    return (...args: Parameters<typeof cb>) => {
         if (timer) clearTimeout(timer);
         timer = setTimeout(cb, delay, ...args);
     };
