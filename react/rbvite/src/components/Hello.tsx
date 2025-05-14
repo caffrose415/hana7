@@ -4,6 +4,7 @@ import {
     type PropsWithChildren,
     type RefObject,
 } from 'react';
+import { useCounter } from '../contexts/counter/useCounter';
 
 export type HelloHandler = {
     xx: string;
@@ -13,7 +14,6 @@ export type HelloHandler = {
 type Props = {
     name: string;
     age: number;
-    plusCount: () => void;
     helloButtonRef: RefObject<HTMLButtonElement | null>;
     refx: ForwardedRef<HelloHandler>;
 };
@@ -22,11 +22,11 @@ type Props = {
 export default function Hello({
     name,
     age,
-    plusCount,
     helloButtonRef,
     children,
     refx,
 }: PropsWithChildren<Props>) {
+    const { plusCount } = useCounter();
     const helloHandler = {
         xx: 'XXXX',
         sayHello() {
