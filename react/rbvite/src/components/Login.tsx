@@ -66,15 +66,20 @@ export default function Login() {
     useEffect(() => {
         plusCount();
         return minusCount;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     // useTimeout(console.log, 1000, 'Hong', x);
     useTimeout(console.log, 1000, 'Kim', 99);
 
     // // interval도 만들었다면,
-    useInterval(setX, 1000, x + 1);
+    const { reset, clear } = useInterval(() => setX((prev) => prev + 1), 1000);
+    // useInterval(setX, 1000, x + 1);
+    useTimeout(reset, 2000);
+    useTimeout(clear, 5000);
+
     // useInterval(console.log, 1000, x);
+    useEffect(() => idRef.current?.focus(), []);
 
     return (
         <form onSubmit={makeLogin}>
