@@ -30,8 +30,7 @@ function App() {
             </SessionProvider>
 
             <Hello
-                name={'홍길동'}
-                age={33}
+                id={count + 1}
                 helloButtonRef={helloButtonRef}
                 refx={helloHandlerRef}
             >
