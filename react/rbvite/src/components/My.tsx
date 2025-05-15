@@ -4,7 +4,7 @@ import Item from './Item';
 import { memo, useEffect, useMemo, useState, type RefObject } from 'react';
 import { useSession } from '../contexts/session/SessionContext';
 import { useToggle } from '../hooks/useToggle';
-import ColorTitle from './COlorTitle';
+import ColorTitle from './ColorTitle';
 
 type Props = {
     logoutButtonRef: RefObject<HTMLButtonElement | null>;
