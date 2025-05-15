@@ -66,6 +66,7 @@ export default function Login() {
     useEffect(() => {
         plusCount();
         return minusCount;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     // useTimeout(console.log, 1000, 'Hong', x);
