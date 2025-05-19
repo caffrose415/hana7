@@ -12,6 +12,7 @@ import {
 import { useSession } from '../contexts/session/SessionContext';
 import ColorTitle from './ColorTitle';
 import SlowList from './SlowList';
+import FindUser from './Posts';
 
 type Props = {
     logoutButtonRef: RefObject<HTMLButtonElement | null>;
@@ -85,6 +86,7 @@ export default function My({ logoutButtonRef }: Props) {
 
     return (
         <>
+            <FindUser />
             {loginUser ? (
                 <Profile logoutButtonRef={logoutButtonRef} />
             ) : (
