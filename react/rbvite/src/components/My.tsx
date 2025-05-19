@@ -12,6 +12,7 @@ import {
 import { useSession } from '../contexts/session/SessionContext';
 import ColorTitle from './ColorTitle';
 import SlowList from './SlowList';
+import FindUser from './Posts';
 
 type Props = {
     logoutButtonRef: RefObject<HTMLButtonElement | null>;
@@ -53,6 +54,7 @@ export default function My({ logoutButtonRef }: Props) {
 
     // -------- search
     const [searchStr, setSearchStr] = useState('');
+    // const [query, setQuery] = useState('');
     const [query] = useState('');
     const deferedQuery = useDeferredValue(searchStr);
 
@@ -84,10 +86,11 @@ export default function My({ logoutButtonRef }: Props) {
 
     return (
         <>
+            <FindUser />
             {loginUser ? (
                 <Profile logoutButtonRef={logoutButtonRef} />
             ) : (
-                <Login />
+                <Login title={'Login Title'} />
             )}
             <MemoColorTitle color={cart.length % 2 === 1 ? 'blue' : 'yellow'}>
                 Total: {totalPrice.toLocaleString()}
