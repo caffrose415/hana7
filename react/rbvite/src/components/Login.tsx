@@ -66,33 +66,40 @@ export default function Login() {
     useEffect(() => {
         plusCount();
         return minusCount;
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+        // return () => minusCount();
+    }, [plusCount, minusCount]);
 
     // useTimeout(console.log, 1000, 'Hong', x);
-    useTimeout(console.log, 1000, 'Kim', 99);
+    // useTimeout(console.log, 1000, 'Kim', 99);
 
-    // // interval도 만들었다면,
-    const { reset, clear } = useInterval(() => setX((prev) => prev + 1), 1000);
-    // useInterval(setX, 1000, x + 1);
+    // const f = useCallback(() => {
+    //   setX(x => x + 1);
+    // }, []);
+
+    // interval도 만들었다면,
+    console.log('xxxxxx>>', x);
+    const { reset, clear } = useInterval(() => setX((x) => x + 1), 1000);
+    // reset(); // Danger!! call every render
     useTimeout(reset, 2000);
     useTimeout(clear, 5000);
 
-    // useInterval(console.log, 1000, x);
     useEffect(() => idRef.current?.focus(), []);
 
     return (
-        <form onSubmit={makeLogin}>
-            <div>
-                LoginID({x}):
-                <input ref={idRef} type="number" />
-            </div>
-            <div>
-                LoginName:
-                <input type="text" ref={nameRef} />
-            </div>
-            <button type="reset">Cancel</button>
-            <button type="submit">Login</button>
-        </form>
+        <>
+            <form onSubmit={makeLogin}>
+                <div>
+                    LoginID({x}):
+                    <input ref={idRef} type="number" />
+                </div>
+                <div>
+                    LoginName:
+                    <input type="text" ref={nameRef} />
+                </div>
+                <button type="reset">Cancel</button>
+                <button type="submit">Login</button>
+            </form>
+            <button onClick={() => setX((x) => x + 1)}>Set X</button>
+        </>
     );
 }
