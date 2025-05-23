@@ -6,7 +6,7 @@ import { PropsWithChildren, Suspense } from 'react';
 
 export default function HelloLayout({ children }: PropsWithChildren) {
   return (
-    <>
+    <div className='border border-green-500 p-1'>
       <h1>THis is Hello Layout</h1>
       <ul className='flex'>
         <li>
@@ -24,6 +24,6 @@ export default function HelloLayout({ children }: PropsWithChildren) {
         <HelloSearchParams />
       </Suspense>
       <div>{children}</div>
-    </>
+    </div>
   );
 }
