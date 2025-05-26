@@ -1,6 +1,9 @@
+import { ModeToggle } from '@/components/ui/mode-toggle';
+import { ThemeProvider } from '@/components/ui/theme-provider';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Geist, Geist_Mono } from 'next/font/google';
+import { ReactNode } from 'react';
 import './globals.css';
 
 const geistSans = Geist({
@@ -21,28 +24,37 @@ export const metadata: Metadata = {
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: ReactNode;
 }>) {
   return (
-    <html lang='en'>
+    <html lang='en' suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased m-5`}
       >
-        <div className='flex gap-3'>
-          Root
-          <Link href='/hello'>Hello</Link>
-          <Link href='/hi'>Hi</Link>
-          <Link href='/hi/night'>Hinight</Link>
-          <Link href='/hi/morning'>Himorning</Link>
-          <Link href='/hi/afternoon'>Hiafternoon</Link>
-          <Link href='/hi/evening'>Hievening</Link>
-          <Link href='/parallel'>Parallel</Link>
-          <Link href='/intercept'>Intercept</Link>
-          <Link href='/example'>Example</Link>
-        </div>
-        <div>{children}</div>
-        <hr />
-        <h2>Footer</h2>
+        <ThemeProvider
+          attribute='class'
+          defaultTheme='system'
+          enableSystem
+          disableTransitionOnChange
+        >
+          <div className='flex gap-3'>
+            <span className='dark:text-red-500'>Root</span>
+            <Link href='/hello'>Hello</Link>
+            <Link href='/hi'>Hi</Link>
+            <Link href='/hi/night'>Hinight</Link>
+            <Link href='/hi/morning'>Himorning</Link>
+            <Link href='/hi/afternoon'>Hiafternoon</Link>
+            <Link href='/hi/evening'>Hievening</Link>
+            <Link href='/parallel'>Parallel</Link>
+            <Link href='/intercept'>Intercept</Link>
+            <Link href='/example'>Example</Link>
+            <Link href='/csr'>CSR</Link>
+            <ModeToggle />
+          </div>
+          <div>{children}</div>
+          <hr />
+          <h2>Footer</h2>
+        </ThemeProvider>
       </body>
     </html>
   );
