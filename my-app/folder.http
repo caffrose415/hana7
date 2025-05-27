@@ -1,0 +1,49 @@
+@api = http://localhost:3000/api
+### get all
+GET {{api}}/folders
+
+###post folders
+POST {{api}}/folders
+
+{
+    "title": "New Folder Title"
+}
+
+###get one
+GET {{api}}/folders/1
+
+###put one
+PUT {{api}}/folders/1
+
+{
+    "title":"update Folder Title"
+}
+
+### delete one
+DELETE {{api}}/folders/1
+
+### get post
+GET {{api}}/folders/1/posts
+
+### post post
+POST {{api}}/folders/1/posts
+
+{
+    "title":"New Post Title",
+    "writer" : "New Writer",
+    "content" : "....New Content"
+}
+
+### get postid
+GET {{api}}/folders/1/posts/1
+
+### put postid
+PUT {{api}}/folders/1/posts/1
+
+{
+    "title" : "Update title",
+    "content" : "update content..."
+}
+
+### DELETE postid
+DELETE {{api}}/folders/1/posts/1
