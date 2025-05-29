@@ -1,41 +1,37 @@
+import {
+  FolderPostParams,
+  getPostByPostId,
+  posts,
+} from '@/app/api/folders/folderdata';
 import { notFound } from 'next/navigation';
-import { posts } from '../../../folderdata';
+import { NextRequest, NextResponse } from 'next/server';
 
-type Params = {
-  params: Promise<{ folderId: string; postId: string }>;
-};
-
-export async function GET(_req: Request, { params }: Params) {
-  const { folderId, postId } = await params;
-
-  const matchPost = posts.find(
-    (p) => p.folder === +folderId && p.id === +postId
-  );
-
-  return Response.json(matchPost);
+// folders/1/posts/2
+export async function GET(req: NextRequest, { params }: FolderPostParams) {
+  const { postId } = await params;
+  const post = getPostByPostId(postId);
+  if (!post) return notFound();
+  return NextResponse.json(post);
 }
 
-export async function PUT(req: Request, { params }: Params) {
+export async function PATCH(req: NextRequest, { params }: FolderPostParams) {
   const { folderId, postId } = await params;
-  const body = await req.json();
+  const post = getPostByPostId(postId);
+  if (!post) return notFound();
 
-  const matchPost = posts.find(
-    (p) => p.folder === +folderId && p.id === +postId
-  );
-  matchPost.title = body.title;
-  matchPost.content = body.content;
-
-  return Response.json(matchPost);
+  const { folder, title, writer, content } = await req.json();
+  post.folder = folder || +folderId;
+  post.title = title;
+  post.writer = writer;
+  post.content = content;
+  return NextResponse.json(post);
 }
 
-export async function DELETE(req: Request, { params }: Params) {
-  const { folderId, postId } = await params;
-
-  const idx = posts.findIndex(
-    (p) => p.folder === +folderId && p.id === +postId
-  );
+export async function DELETE(req: NextRequest, { params }: FolderPostParams) {
+  const { postId } = await params;
+  const idx = posts.findIndex((p) => p.id === +postId);
   if (idx === -1) return notFound();
 
   posts.splice(idx, 1);
-  return Response.json({ msg: 'DELETE CLEAR' });
+  return NextResponse.json({ msg: 'OK' });
 }

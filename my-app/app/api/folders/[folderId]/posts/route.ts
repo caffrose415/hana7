@@ -1,23 +1,23 @@
-import { posts } from '../../folderdata';
+import { NextRequest, NextResponse } from 'next/server';
+import { FolderParams, getPostsByFolderId, posts } from '../../folderdata';
 
-type Params = {
-  params: Promise<{ folderId: string }>;
-};
-
-export async function GET(_req: Request, { params }: Params) {
+// folders/1/posts
+export async function GET(req: NextRequest, { params }: FolderParams) {
   const { folderId } = await params;
-  const post = posts.filter((p) => p.folder === +folderId);
+  const { searchParams } = req.nextUrl;
+  const myPosts = getPostsByFolderId(folderId);
+  const results = myPosts.filter((f) =>
+    f.title.includes(searchParams.get('q') ?? '')
+  );
 
-  return Response.json(post);
+  return NextResponse.json(results);
 }
 
-export async function POST(req: Request, { params }: Params) {
+export async function POST(req: NextRequest, { params }: FolderParams) {
   const { folderId } = await params;
   const body = await req.json();
   const id = Math.max(...posts.map((p) => p.id), 0) + 1;
-
-  const newPost = { folder: +folderId, id, ...body };
-
-  posts.push(newPost);
-  return Response.json(newPost);
+  const newer = { folder: +folderId, id, ...body };
+  posts.push(newer);
+  return NextResponse.json(newer);
 }

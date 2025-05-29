@@ -1,0 +1,109 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model dept {
+  id                    Int    @id @default(autoincrement()) @db.UnsignedTinyInt
+  pid                   Int    @default(0) @db.UnsignedTinyInt
+  dname                 String @db.VarChar(31)
+  captain               Int?   @db.UnsignedInt
+  emp_dept_captainToemp emp?   @relation("dept_captainToemp", fields: [captain], references: [id], map: "fk_Dept_captain_Emp")
+  emp_emp_deptTodept    emp[]  @relation("emp_deptTodept")
+
+  @@index([captain], map: "fk_Dept_captain_Emp")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model emaillog {
+  id       Int     @id @default(autoincrement()) @db.UnsignedInt
+  sender   Int     @db.UnsignedInt
+  receiver String  @db.VarChar(1024)
+  subject  String  @default("") @db.VarChar(255)
+  body     String? @db.Text
+
+  @@index([sender], map: "fk_EmailLog_sender_Emp")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model emp {
+  id                     Int       @id @default(autoincrement()) @db.UnsignedInt
+  ename                  String    @db.VarChar(31)
+  dept                   Int       @db.UnsignedTinyInt
+  auth                   Int       @default(9) @db.UnsignedTinyInt
+  salary                 Int       @default(0)
+  mobile                 String?   @db.VarChar(13)
+  Outdt                  DateTime? @db.Date
+  remark                 Json?
+  email                  String?   @db.VarChar(255)
+  dept_dept_captainToemp dept[]    @relation("dept_captainToemp")
+  dept_emp_deptTodept    dept      @relation("emp_deptTodept", fields: [dept], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "emp_ibfk_1")
+  notice                 notice[]
+
+  @@index([dept], map: "dept")
+  @@index([email], map: "idx_emp_email")
+}
+
+/// This table is a partition table and requires additional setup for migrations. Visit https://pris.ly/d/partition-tables for more info.
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model emptest {
+  id     Int       @id @default(autoincrement()) @db.UnsignedInt
+  ename  String    @db.VarChar(31)
+  dept   Int       @db.UnsignedTinyInt
+  auth   Int       @default(9) @db.UnsignedTinyInt
+  salary Int       @default(0)
+  mobile String?   @db.VarChar(13)
+  Outdt  DateTime? @db.Date
+  remark Json?
+  email  String?   @db.VarChar(255)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model notice {
+  id         Int      @id @default(autoincrement()) @db.UnsignedInt
+  createdate DateTime @default(now()) @db.Timestamp(0)
+  workdate   DateTime @default(now()) @db.Timestamp(0)
+  title      String   @db.VarChar(255)
+  writer     Int?     @db.UnsignedInt
+  contents   String?  @db.Text
+  emp        emp?     @relation(fields: [writer], references: [id], onUpdate: NoAction, map: "fk_Notice_writer")
+
+  @@index([writer], map: "fk_Notice_writer")
+  @@fulltext([title, contents], map: "ft_idx_Notice_title_contents")
+}
+
+/// This table is a partition table and requires additional setup for migrations. Visit https://pris.ly/d/partition-tables for more info.
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model partirangetest {
+  studentno   String @db.VarChar(7)
+  enteryear   Int    @db.SmallInt
+  studentname String @db.VarChar(31)
+
+  @@ignore
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model stopword {
+  value String @db.VarChar(31)
+
+  @@ignore
+}
+
+model t {
+  id   Int    @id @default(autoincrement())
+  name String @db.VarChar(31)
+}
+
+model user {
+  id     Int     @id @default(autoincrement()) @db.UnsignedInt
+  name   String  @db.VarChar(31)
+  email  String  @unique(map: "uniq_User_email") @db.VarChar(255)
+  image  String? @db.VarChar(255)
+  passwd String? @db.VarChar(256)
+}

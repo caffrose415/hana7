@@ -3,11 +3,16 @@ import ActionButton from '@/components/ui/action-button';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { login, logout } from '@/lib/actions/sign';
+import { getUser, getUsers } from '@/lib/actions/user-action';
 import { auth } from '@/lib/auth';
 
 export default async function Home() {
   const session = await auth();
-  console.log('🚀 session:', session);
+  console.debug('🚀 session:', session);
+  const users = await getUsers();
+  console.log('🚀 ~ Home ~ users:', users);
+  const use = await getUser('hong@gmail.com');
+  console.log('🚀 ~ Home ~ use:', use);
 
   // const login = async () => {
   //   'use server';

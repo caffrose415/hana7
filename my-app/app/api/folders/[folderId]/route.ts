@@ -1,35 +1,29 @@
 import { notFound } from 'next/navigation';
-import { folders } from '../folderdata';
+import { NextRequest, NextResponse } from 'next/server';
+import { FolderParams, folders } from '../folderdata';
 
-type Params = {
-  params: Promise<{ folderId: string }>;
-};
-
-export async function GET(_req: Request, { params }: Params) {
+// folders/1
+export async function GET(req: NextRequest, { params }: FolderParams) {
   const { folderId } = await params;
   const folder = folders.find((f) => f.id === +folderId);
-  if (!folder) return Response.json({ code: 404, message: 'page not found' });
-
-  return Response.json(folder);
+  if (!folder) return notFound();
+  return NextResponse.json(folder);
 }
 
-export async function PUT(req: Request, { params }: Params) {
+export async function PATCH(req: NextRequest, { params }: FolderParams) {
   const { folderId } = await params;
   const folder = folders.find((f) => f.id === +folderId);
   if (!folder) return notFound();
 
-  const body = await req.json();
-  folder.title = body.title;
-
-  return Response.json(folders);
+  const { title } = await req.json();
+  folder.title = title;
+  return NextResponse.json(folder);
 }
 
-export async function DELETE(req: Request, { params }: Params) {
+export async function DELETE(req: NextRequest, { params }: FolderParams) {
   const { folderId } = await params;
   const idx = folders.findIndex((f) => f.id === +folderId);
-
   if (idx === -1) return notFound();
   folders.splice(idx, 1);
-
-  return Response.json({ msg: 'delete complete' });
+  return NextResponse.json({ msg: 'OK' });
 }

@@ -39,6 +39,7 @@ export default async function RootLayout({
               <Link href='/parallel'>Parallel</Link>
               <Link href='/intercept'>Intercept</Link>
               <Link href='/photos'>Photos</Link>
+              <Link href='/todos'>Todos</Link>
               <ModeToggle />
             </div>
 
