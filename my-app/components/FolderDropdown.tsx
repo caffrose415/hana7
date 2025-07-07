@@ -9,9 +9,14 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { ChevronDownIcon, ChevronUpIcon } from 'lucide-react';
 import { useEffect, useReducer, useState } from 'react';
-import { Folder, getFolders } from '@/lib/folders';
+import { getFolders, type Folder } from '@/lib/folders';
+import { Input } from './ui/input';
 
-export default function FolderDropdown() {
+type Props = {
+  dataField?: string;
+};
+
+export default function FolderDropdown({ dataField }: Props) {
   const [folders, setFolders] = useState<Folder[]>([]);
   const [folder, setFolder] = useState<Folder>();
   const [isOpen, toggleOpen] = useReducer((p) => !p, false);
@@ -43,6 +48,10 @@ export default function FolderDropdown() {
           </DropdownMenuCheckboxItem>
         ))}
       </DropdownMenuContent>
+
+      {dataField && (
+        <Input type='hidden' name={dataField} defaultValue={folder?.id} />
+      )}
     </DropdownMenu>
   );
 }
