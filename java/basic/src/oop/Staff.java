@@ -31,4 +31,3 @@ public class Staff extends Person {
 		return "Staff[" + super.toString() + ", school='" + school + '\'' + ", pay=" + pay + ']';
 	}
 }
-
