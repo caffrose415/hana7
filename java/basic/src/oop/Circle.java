@@ -1,6 +1,6 @@
 package oop;
 
-public class Circle {
+public class Circle implements Comparable<Circle> {
 	private double radius = 1.0;
 	private String color = "red";
 
@@ -41,4 +41,10 @@ public class Circle {
 		Circle circle = new Circle(2);
 		System.out.println(circle.toString());
 	}
+
+	@Override
+	public int compareTo(Circle c) {
+		return Double.compare(this.radius, c.getRadius());
+	}
+
 }

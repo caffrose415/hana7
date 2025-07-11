@@ -1,142 +1,125 @@
 package book;
 
 public class ArrayedGeneralBook implements GeneralBook {
+	private static final int CAPACITY = 10;
+
 	private String[] names;
 	private String[] records;
 
-	public ArrayedGeneralBook(String[] initNames, String[] initRecords) {
-		this.names   = new String[initNames.length];
-		this.records = new String[initRecords.length];
+	private int size;
 
-		for (int i = 0; i < initNames.length; i++) {
-			this.names[i]   = initNames[i];
-			this.records[i] = initRecords[i];
-		}
+	public ArrayedGeneralBook(String[] names, String[] records) {
+		if (names == null || records == null || names.length != records.length)
+			throw new IllegalStateException("Not valid names and records!!");
+
+		this.size = names.length;
+		this.names = new String[this.size + CAPACITY];
+		this.records = new String[this.size + CAPACITY];
+
+		cloneStrings(names, this.names);
+		cloneStrings(records, this.records);
 	}
 
 	@Override
 	public int size() {
-		return names.length;
+		return this.size;
+	}
+
+	private String joinStrings(String[] strs) {
+		StringBuilder sb = new StringBuilder(size * 15);
+		for (int i = 0; i < size; i++) {
+			sb.append(strs[i]).append(' ');
+		}
+		return sb.toString();
 	}
 
 	@Override
 	public String names() {
-		if (names.length == 0) {
-			return "";
-		}
-
-		StringBuilder sb = new StringBuilder();
-
-		for (int i = 0; i < names.length; i++) {
-			sb.append(names[i]);
-			if (i < names.length - 1) {
-				sb.append(" ");
-			}
-		}
-		return sb.toString();
+		return joinStrings(names);
 	}
 
 	@Override
 	public String records() {
+		return joinStrings(records);
+	}
 
-		if (records.length == 0) {
-			return "";
-		}
-		StringBuilder sb = new StringBuilder();
-
-		for (int i = 0; i < records.length; i++) {
-			sb.append(records[i]);
-			if (i < records.length - 1) {
-				sb.append(" ");
+	private int indexOf(String[] strs, String str) {
+		for (int i = 0; i < this.size; i++) {
+			if (strs[i].equals(str)) {
+				return i;
 			}
 		}
-		return sb.toString();
+
+		return -1;
 	}
 
 	@Override
-	public boolean nameExists(String name) {
-		for (String n : names) {
-			if (n.equals(name)) {
-				return true;
-			}
-		}
-		return false;
+	public boolean nameExist(String name) {
+		int idx = indexOf(this.names, name);
+		return idx != -1;
+	}
+
+	private String[] cloneStrings(String[] sources) {
+		String[] tmps = new String[size + (size >> 1)];
+		return this.cloneStrings(sources, tmps);
+	}
+
+	private String[] cloneStrings(String[] sources, String[] targets) {
+		System.arraycopy(sources, 0, targets, 0, this.size);
+		return targets;
+	}
+
+	private void expand() {
+		// String[] tmps = new String[size + size / 2];
+		this.names = cloneStrings(this.names);
+		this.records = cloneStrings(this.names);
 	}
 
 	@Override
 	public void add(String name, String record) {
-		if (nameExists(name)) {
-			System.out.println("이미 존재하는 이름: " + name);
+		int idx = indexOf(this.names, name);
+		if (idx != -1)
 			return;
-		}
 
-		String[] newNames   = new String[names.length + 1];
-		String[] newRecords = new String[records.length + 1];
+		if (this.size == this.names.length)
+			expand();
 
-		for (int i = 0; i < names.length; i++) {
-			newNames[i] = names[i];
-			newRecords[i] = records[i];
-		}
-
-		newNames[names.length] = name;
-		newRecords[records.length] = record;
-
-		names = newNames;
-		records = newRecords;
-
-		sort();
+		this.names[size] = name;
+		this.records[size] = record;
+		this.size++;
 	}
 
 	@Override
-	public void remove(String name, String record) {
-		int idx = -1;
-		for (int i = 0; i < names.length; i++) {
-			if (names[i].equals(name) && records[i].equals(record)) {
-				idx = i;
-				break;
-			}
-		}
+	public void remove(String name) {
+		int idx = indexOf(this.names, name);
 		if (idx == -1) {
-			System.out.println("삭제X, 해당 이름/레코드를 찾지 못함: " + name + "/" + record);
+			System.out.println("Cannot find the " + name);
 			return;
 		}
 
-		String[] newNames   = new String[names.length - 1];
-		String[] newRecords = new String[records.length - 1];
-
-		for (int i = 0, j = 0; i < names.length; i++) {
-			if (i == idx) continue;
-			newNames[j]  = names[i];
-			newRecords[j] = records[i];
-			j++;
-		}
-		names   = newNames;
-		records = newRecords;
+		this.size--;
+		System.arraycopy(this.names, idx + 1, this.names, idx, size);
+		this.names[size] = null;
+		System.arraycopy(this.records, idx + 1, this.records, idx, size);
+		this.records[size] = null;
 	}
 
 	@Override
 	public String get(String name) {
-		for (int i = 0; i < names.length; i++) {
-			if (names[i].equals(name)) {
-				return records[i];
-			}
-		}
-		return null;
+		return this.records[indexOf(this.names, name)];
 	}
 
 	@Override
 	public void sort() {
-		for (int i = 0; i < names.length - 1; i++) {
-			for (int j = 0; j < names.length - i - 1; j++) {
+		for (int i = 0; i < size - 1; i++) {
+			for (int j = 0; j < size - i - 1; j++) {
 				if (names[j].compareTo(names[j + 1]) > 0) {
-
-					String tmpName = names[j];
+					String tName = names[j];
+					String tRecord = records[j];
 					names[j] = names[j + 1];
-					names[j+ 1] = tmpName;
-
-					String tmpRec  = records[j];
 					records[j] = records[j + 1];
-					records[j + 1] = tmpRec;
+					names[j + 1] = tName;
+					records[j + 1] = tRecord;
 				}
 			}
 		}
@@ -144,9 +127,11 @@ public class ArrayedGeneralBook implements GeneralBook {
 
 	@Override
 	public void print() {
-		for (int i = 0; i < names.length; i++) {
-			System.out.println(names[i] + records[i]);
+		this.sort();
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < size; i++) {
+			sb.append(this.names[i]).append(this.records[i]).append('\n');
 		}
+		System.out.println(sb);
 	}
-
 }
