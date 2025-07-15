@@ -12,59 +12,65 @@ public class Validator {
 
 		Field[] fields = obj.getClass().getDeclaredFields();
 
-		for (Field f : fields) {
-			f.setAccessible(true);
+		for (Field field : fields) {
+			field.setAccessible(true);
 
 			try {
-				Object value = f.get(obj);
-				String name = f.getName();
+				Object value = field.get(obj);
+				String name = field.getName();
 
-				if (f.isAnnotationPresent(NotNull.class)) {
-					NotNull nn = f.getAnnotation(NotNull.class);
+				if (field.isAnnotationPresent(NotNull.class)) {
+					NotNull ann = field.getAnnotation(NotNull.class);
 					if (value == null) {
-						messages.add(name + "::" + nn.value());
+						messages.add(name + "::" + ann.value());
 						continue;
 					}
 				}
 
-				if (f.isAnnotationPresent(Min.class) && value != null) {
-					Min mm = f.getAnnotation(Min.class);
-					double v = 0.0;
-					if (value.getClass() == String.class) {
-						v = ((String)value).length();
-					} else {
-						v = Double.parseDouble(value.toString());
+				if (value != null) {
+					double numericValue = getNumericValue(field, value);
+
+					if (field.isAnnotationPresent(Min.class)) {
+						Min ann = field.getAnnotation(Min.class);
+						if (numericValue < ann.value()) {
+							messages.add(name + "::" + ann.msg());
+						}
 					}
 
-					if (v < mm.value()) {
-						messages.add(name + "::" + mm.msg());
+					if (field.isAnnotationPresent(Max.class)) {
+						Max ann = field.getAnnotation(Max.class);
+						if (numericValue > ann.value()) {
+							messages.add(name + "::" + ann.msg());
+						}
+					}
+
+					if (field.isAnnotationPresent(In.class)) {
+						In ann = field.getAnnotation(In.class);
+						String valStr = value.toString();
+						if (!Arrays.asList(ann.value()).contains(valStr)) {
+							messages.add(name + "::" + valStr + " 불가능합니다");
+						}
 					}
 				}
-				if (f.isAnnotationPresent(Max.class) && value != null) {
-					Max mm = f.getAnnotation(Max.class);
-					double v = 0.0;
-					if (value.getClass() == String.class) {
-						v = ((String)value).length();
-					} else {
-						v = Double.parseDouble(value.toString());
-					}
-					if (v > mm.value()) {
-						messages.add(name + "::" + mm.msg());
-					}
-				}
-				if (f.isAnnotationPresent(In.class) && value != null) {
-					In in = f.getAnnotation(In.class);
-					String valStr = value.toString();
-					boolean matched = Arrays.asList(in.value()).contains(valStr);
-					if (!matched) {
-						messages.add(name + "::" + valStr + " 불가능합니다");
-					}
-				}
+
 			} catch (Exception e) {
 				e.printStackTrace(System.out);
 			}
 		}
+
 		return messages;
+	}
+
+
+	private static double getNumericValue(Field field, Object value) {
+		if (value instanceof String) {
+			return ((String) value).length();
+		}
+		try {
+			return Double.parseDouble(value.toString());
+		} catch (NumberFormatException e) {
+			return Double.NaN;
+		}
 	}
 
 	public static void main(String[] args) {
