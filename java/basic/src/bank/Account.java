@@ -1,9 +1,14 @@
 package bank;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Scanner;
 
-public class Account {
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+public class Account implements Serializable {
 	private String accountNo;
 	private String name;
 	private int balance;
@@ -19,10 +24,6 @@ public class Account {
 	public Account(String accountNo, String name, int balance) {
 		this(accountNo, name);
 		this.balance = balance;
-	}
-
-	public String getAccountNo() {
-		return accountNo;
 	}
 
 	public Account insert(String accountNo, String name, int balance) {
@@ -50,17 +51,18 @@ public class Account {
 		this.action(-amt);
 	}
 
+	@Setter
 	private Account targetAccount;
 
-	public void setTargetAccount(Account targetAccount) {
-		this.targetAccount = targetAccount;
-	}
-
-	public void transferTo(int amt) {
+	public void transferTo(int amt) throws BankException {
 		this.transferTo(this.targetAccount, amt);
 	}
 
-	public void transferTo(Account targetAccount, int amt) {
+	public void transferTo(Account targetAccount, int amt) throws BankException {
+		// Objects.requireNonNull(targetAccount);
+		if (targetAccount == null)
+			throw new BankException(this, "송금 받을 계좌가 없습니다!");
+		// throw new IllegalStateException("송금 받을 계좌가 없습니다!");
 		this.withdraw(amt, Action.송금);
 		targetAccount.deposit(amt);
 	}
@@ -144,11 +146,15 @@ public class Account {
 				}
 			}
 
-			if (action == Action.조회) {
-				action.banking(targetAccount, 0);
-			} else {
-				System.out.print("얼마를 " + action + "하시겠어요? ");
-				action.banking(targetAccount, scanner.nextInt());
+			try {
+				if (action == Action.조회) {
+					action.banking(targetAccount, 0);
+				} else {
+					System.out.print("얼마를 " + action + "하시겠어요? ");
+					action.banking(targetAccount, scanner.nextInt());
+				}
+			} catch (BankException e) {
+				System.err.println(e.getMessage());
 			}
 		}
 

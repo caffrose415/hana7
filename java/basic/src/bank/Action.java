@@ -15,7 +15,7 @@ public enum Action {
 	},
 	송금("^") {
 		@Override
-		public void banking(Account account, int amt) {
+		public void banking(Account account, int amt) throws BankException {
 			account.transferTo(amt);
 		}
 	},
@@ -42,10 +42,11 @@ public enum Action {
 		return this.cmd.equals(cmd);
 	}
 
-	public abstract void banking(Account account, int amt);
+	public abstract void banking(Account account, int amt) throws BankException;
 
 	@Override
 	public String toString() {
-		return String.format("%s(%s)", this.name(), this.cmd);
+		// return String.format("%s(%s)", this.name(), this.cmd);
+		return "%s(%s)".formatted(this.name(), this.cmd);
 	}
 }
