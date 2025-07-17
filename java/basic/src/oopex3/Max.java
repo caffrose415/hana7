@@ -5,10 +5,10 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
+@Retention(RetentionPolicy.RUNTIME)
 public @interface Max {
-	int value() default 10;
+	double value();
 
-	String msg() default "최대값보다 큽니다!";
+	String msg() default "Not over %.1f";
 }

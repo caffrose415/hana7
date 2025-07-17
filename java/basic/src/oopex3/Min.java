@@ -5,10 +5,10 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
+@Retention(RetentionPolicy.RUNTIME)
 public @interface Min {
-	int value() default 5;
+	double value();
 
-	String msg() default "최소값보다 작습니다!";
+	String msg() default "At least %.1f";
 }

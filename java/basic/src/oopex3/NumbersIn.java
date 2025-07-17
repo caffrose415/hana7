@@ -7,8 +7,8 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface In {
-	String[] value(); // default {};
+public @interface NumbersIn {
+	double[] value(); // default {};
 
 	String msg() default "Only %s available!";
 }
