@@ -25,7 +25,7 @@ public class ChatServer {
 	public static synchronized void joinRoom(String room, ClientHandler handler) {
 		rooms.putIfAbsent(room, new HashSet<>());
 		rooms.get(room).add(handler);
-		broadcast(room,   handler.getName() + "님이 입장했습니다.");
+		broadcast(room, handler.getName() + "님이 입장했습니다.");
 	}
 
 	public static synchronized void broadcast(String room, String message) {
@@ -37,12 +37,11 @@ public class ChatServer {
 		}
 	}
 
-
 	public static synchronized void leaveRoom(String room, ClientHandler handler) {
 		Set<ClientHandler> clients = rooms.get(room);
 		if (clients != null) {
 			clients.remove(handler);
-			broadcast(room,  handler.getName() + "님이 퇴장했습니다.");
+			broadcast(room, handler.getName() + "님이 퇴장했습니다.");
 			if (clients.isEmpty()) {
 				rooms.remove(room);
 			}
