@@ -1,0 +1,165 @@
+2025-07-23 11:10:42 [restartedMain] INFO  c.h.springdemo.SpringDemoApplication - Starting SpringDemoApplication using Java 21.0.7 with PID 2920 (C:\Users\super\hana7\spring\spring-demo\build\classes\java\main started by super in C:\Users\super\hana7\spring\spring-demo)
+2025-07-23 11:10:42 [restartedMain] DEBUG c.h.springdemo.SpringDemoApplication - Running with Spring Boot v3.5.3, Spring v6.2.8
+2025-07-23 11:10:42 [restartedMain] INFO  c.h.springdemo.SpringDemoApplication - No active profile set, falling back to 1 default profile: "default"
+2025-07-23 11:10:44 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-07-23 11:10:44 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.42]
+2025-07-23 11:10:44 [restartedMain] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-07-23 11:10:45 [restartedMain] INFO  c.h.springdemo.SpringDemoApplication - Started SpringDemoApplication in 3.211 seconds (process running for 3.802)
+2025-07-23 11:11:04 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-07-23 11:11:04 [http-nio-8080-exec-1] DEBUG c.hana7.springdemo.HelloController - name =null 
+2025-07-23 11:11:04 [http-nio-8080-exec-1] DEBUG c.hana7.springdemo.HelloController - Debug
+2025-07-23 11:11:04 [http-nio-8080-exec-1] WARN  c.hana7.springdemo.HelloController - Warning
+2025-07-23 11:11:04 [http-nio-8080-exec-1] INFO  c.hana7.springdemo.HelloController - info
+2025-07-23 11:12:57 [restartedMain] INFO  c.h.springdemo.SpringDemoApplication - Starting SpringDemoApplication using Java 21.0.7 with PID 9044 (C:\Users\super\hana7\spring\spring-demo\build\classes\java\main started by super in C:\Users\super\hana7\spring\spring-demo)
+2025-07-23 11:12:57 [restartedMain] DEBUG c.h.springdemo.SpringDemoApplication - Running with Spring Boot v3.5.3, Spring v6.2.8
+2025-07-23 11:12:57 [restartedMain] INFO  c.h.springdemo.SpringDemoApplication - No active profile set, falling back to 1 default profile: "default"
+2025-07-23 11:12:59 [restartedMain] DEBUG o.a.tomcat.util.compat.Jre22Compat - Class not found so assuming code is running on a pre-Java 22 JVM
+java.lang.ClassNotFoundException: java.text.ListFormat
+	at java.base/jdk.internal.loader.BuiltinClassLoader.loadClass(BuiltinClassLoader.java:641)
+	at java.base/jdk.internal.loader.ClassLoaders$AppClassLoader.loadClass(ClassLoaders.java:188)
+	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:526)
+	at java.base/java.lang.Class.forName0(Native Method)
+	at java.base/java.lang.Class.forName(Class.java:421)
+	at java.base/java.lang.Class.forName(Class.java:412)
+	at org.apache.tomcat.util.compat.Jre22Compat.<clinit>(Jre22Compat.java:37)
+	at org.apache.tomcat.util.compat.JreCompat.<clinit>(JreCompat.java:74)
+	at org.apache.catalina.startup.Tomcat.<clinit>(Tomcat.java:1195)
+	at org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory.getWebServer(TomcatServletWebServerFactory.java:200)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.createWebServer(ServletWebServerApplicationContext.java:193)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.onRefresh(ServletWebServerApplicationContext.java:167)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:621)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:752)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:439)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:318)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1361)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1350)
+	at com.hana7.springdemo.SpringDemoApplication.main(SpringDemoApplication.java:10)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:50)
+2025-07-23 11:12:59 [restartedMain] DEBUG o.apache.catalina.core.ContainerBase - Add container child [StandardHost[localhost]] to container [StandardEngine[Tomcat]]
+2025-07-23 11:12:59 [restartedMain] DEBUG o.apache.catalina.core.ContainerBase - Add container child [TomcatEmbeddedContext[]] to container [StandardEngine[Tomcat].StandardHost[localhost]]
+2025-07-23 11:12:59 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-07-23 11:12:59 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.42]
+2025-07-23 11:12:59 [restartedMain] DEBUG o.a.catalina.loader.WebappLoader - Starting this Loader
+2025-07-23 11:12:59 [restartedMain] DEBUG o.apache.catalina.webresources.Cache - Increased cache size by [531] for item [org.apache.catalina.webresources.CachedResource@2c5812cf] at [/WEB-INF/classes] making total cache size [531]
+2025-07-23 11:12:59 [restartedMain] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-07-23 11:12:59 [restartedMain] DEBUG o.apache.catalina.core.ContainerBase - Add container child [StandardWrapper[dispatcherServlet]] to container [StandardEngine[Tomcat].StandardHost[localhost].TomcatEmbeddedContext[]]
+2025-07-23 11:12:59 [restartedMain] DEBUG o.a.catalina.session.StandardManager - Persisted data file [C:\Users\super\AppData\Local\Temp\0835C309491F3EC106487D97D2189280ECE52449\servlet-sessions\SESSIONS.ser] was not found
+2025-07-23 11:12:59 [restartedMain] DEBUG org.apache.catalina.mapper.Mapper - Registered host [localhost]
+2025-07-23 11:12:59 [restartedMain] DEBUG o.a.catalina.mapper.MapperListener - Register Wrapper [dispatcherServlet] in Context [] for service [StandardService[Tomcat]]
+2025-07-23 11:12:59 [restartedMain] DEBUG o.a.catalina.mapper.MapperListener - Register Context [] for service [StandardService[Tomcat]]
+2025-07-23 11:12:59 [restartedMain] DEBUG o.a.catalina.mapper.MapperListener - Register host [localhost] at domain [null] for service [StandardService[Tomcat]]
+2025-07-23 11:12:59 [restartedMain] DEBUG _.s.w.s.HandlerMapping.Mappings - 
+	c.h.s.HelloController:
+	{GET [/hello]}: hello(String)
+2025-07-23 11:12:59 [restartedMain] DEBUG _.s.w.s.HandlerMapping.Mappings - 
+	o.s.b.a.w.s.e.BasicErrorController:
+	{ [/error]}: error(HttpServletRequest)
+	{ [/error], produces [text/html]}: errorHtml(HttpServletRequest,HttpServletResponse)
+2025-07-23 11:12:59 [restartedMain] DEBUG _.s.w.s.HandlerMapping.Mappings - 'beanNameHandlerMapping' {}
+2025-07-23 11:12:59 [restartedMain] DEBUG o.apache.catalina.webresources.Cache - Increased cache size by [501] for item [org.apache.catalina.webresources.CachedResource@57d3e866] at [/] making total cache size [1032]
+2025-07-23 11:12:59 [restartedMain] DEBUG _.s.w.s.HandlerMapping.Mappings - 'resourceHandlerMapping' {/webjars/**=ResourceHttpRequestHandler [classpath [META-INF/resources/webjars/]], /**=ResourceHttpRequestHandler [classpath [META-INF/resources/], classpath [resources/], classpath [static/], classpath [public/], ServletContext [/]]}
+2025-07-23 11:13:00 [restartedMain] INFO  c.h.springdemo.SpringDemoApplication - Started SpringDemoApplication in 3.3 seconds (process running for 3.927)
+2025-07-23 11:13:13 [http-nio-8080-exec-2] DEBUG o.a.c.a.jaspic.AuthConfigFactoryImpl - Loading persistent provider registrations from [C:\Users\super\AppData\Local\Temp\tomcat.8080.11148165658043580649\conf\jaspic-providers.xml]
+2025-07-23 11:13:13 [http-nio-8080-exec-2] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-07-23 11:13:13 [http-nio-8080-exec-2] DEBUG c.hana7.springdemo.HelloController - name =null 
+2025-07-23 11:13:13 [http-nio-8080-exec-2] DEBUG c.hana7.springdemo.HelloController - Debug
+2025-07-23 11:13:13 [http-nio-8080-exec-2] WARN  c.hana7.springdemo.HelloController - Warning
+2025-07-23 11:13:13 [http-nio-8080-exec-2] INFO  c.hana7.springdemo.HelloController - info
+2025-07-23 11:18:46 [restartedMain] INFO  c.h.springdemo.SpringDemoApplication - Starting SpringDemoApplication using Java 21.0.7 with PID 9044 (C:\Users\super\hana7\spring\spring-demo\build\classes\java\main started by super in C:\Users\super\hana7\spring\spring-demo)
+2025-07-23 11:18:46 [restartedMain] DEBUG c.h.springdemo.SpringDemoApplication - Running with Spring Boot v3.5.3, Spring v6.2.8
+2025-07-23 11:18:46 [restartedMain] INFO  c.h.springdemo.SpringDemoApplication - No active profile set, falling back to 1 default profile: "default"
+2025-07-23 11:18:47 [restartedMain] DEBUG o.apache.catalina.core.ContainerBase - Add container child [StandardHost[localhost]] to container [StandardEngine[Tomcat]]
+2025-07-23 11:18:47 [restartedMain] DEBUG o.apache.catalina.core.ContainerBase - Add container child [TomcatEmbeddedContext[]] to container [StandardEngine[Tomcat].StandardHost[localhost]]
+2025-07-23 11:18:47 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-07-23 11:18:47 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.42]
+2025-07-23 11:18:47 [restartedMain] DEBUG o.a.catalina.loader.WebappLoader - Starting this Loader
+2025-07-23 11:18:47 [restartedMain] DEBUG o.apache.catalina.webresources.Cache - Increased cache size by [531] for item [org.apache.catalina.webresources.CachedResource@51fa38df] at [/WEB-INF/classes] making total cache size [531]
+2025-07-23 11:18:47 [restartedMain] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-07-23 11:18:47 [restartedMain] DEBUG o.apache.catalina.core.ContainerBase - Add container child [StandardWrapper[dispatcherServlet]] to container [StandardEngine[Tomcat].StandardHost[localhost].TomcatEmbeddedContext[]]
+2025-07-23 11:18:47 [restartedMain] DEBUG o.a.catalina.session.StandardManager - Persisted data file [C:\Users\super\AppData\Local\Temp\0835C309491F3EC106487D97D2189280ECE52449\servlet-sessions\SESSIONS.ser] was not found
+2025-07-23 11:18:47 [restartedMain] DEBUG org.apache.catalina.mapper.Mapper - Registered host [localhost]
+2025-07-23 11:18:47 [restartedMain] DEBUG o.a.catalina.mapper.MapperListener - Register Wrapper [dispatcherServlet] in Context [] for service [StandardService[Tomcat]]
+2025-07-23 11:18:47 [restartedMain] DEBUG o.a.catalina.mapper.MapperListener - Register Context [] for service [StandardService[Tomcat]]
+2025-07-23 11:18:47 [restartedMain] DEBUG o.a.catalina.mapper.MapperListener - Register host [localhost] at domain [null] for service [StandardService[Tomcat]]
+2025-07-23 11:18:47 [restartedMain] DEBUG _.s.w.s.HandlerMapping.Mappings - 
+	c.h.s.HelloController:
+	{GET [/hello]}: hello(String)
+2025-07-23 11:18:47 [restartedMain] DEBUG _.s.w.s.HandlerMapping.Mappings - 
+	o.s.b.a.w.s.e.BasicErrorController:
+	{ [/error]}: error(HttpServletRequest)
+	{ [/error], produces [text/html]}: errorHtml(HttpServletRequest,HttpServletResponse)
+2025-07-23 11:18:47 [restartedMain] DEBUG _.s.w.s.HandlerMapping.Mappings - 'beanNameHandlerMapping' {}
+2025-07-23 11:18:47 [restartedMain] DEBUG o.apache.catalina.webresources.Cache - Increased cache size by [501] for item [org.apache.catalina.webresources.CachedResource@4a8e8c6e] at [/] making total cache size [1032]
+2025-07-23 11:18:47 [restartedMain] DEBUG _.s.w.s.HandlerMapping.Mappings - 'resourceHandlerMapping' {/webjars/**=ResourceHttpRequestHandler [classpath [META-INF/resources/webjars/]], /**=ResourceHttpRequestHandler [classpath [META-INF/resources/], classpath [resources/], classpath [static/], classpath [public/], ServletContext [/]]}
+2025-07-23 11:18:47 [restartedMain] INFO  c.h.springdemo.SpringDemoApplication - Started SpringDemoApplication in 0.693 seconds (process running for 351.105)
+2025-07-23 11:19:25 [restartedMain] INFO  c.h.springdemo.SpringDemoApplication - Starting SpringDemoApplication using Java 21.0.7 with PID 9044 (C:\Users\super\hana7\spring\spring-demo\build\classes\java\main started by super in C:\Users\super\hana7\spring\spring-demo)
+2025-07-23 11:19:25 [restartedMain] DEBUG c.h.springdemo.SpringDemoApplication - Running with Spring Boot v3.5.3, Spring v6.2.8
+2025-07-23 11:19:25 [restartedMain] INFO  c.h.springdemo.SpringDemoApplication - No active profile set, falling back to 1 default profile: "default"
+2025-07-23 11:19:25 [restartedMain] DEBUG o.apache.catalina.core.ContainerBase - Add container child [StandardHost[localhost]] to container [StandardEngine[Tomcat]]
+2025-07-23 11:19:25 [restartedMain] DEBUG o.apache.catalina.core.ContainerBase - Add container child [TomcatEmbeddedContext[]] to container [StandardEngine[Tomcat].StandardHost[localhost]]
+2025-07-23 11:19:25 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-07-23 11:19:25 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.42]
+2025-07-23 11:19:26 [restartedMain] DEBUG o.a.catalina.loader.WebappLoader - Starting this Loader
+2025-07-23 11:19:26 [restartedMain] DEBUG o.apache.catalina.webresources.Cache - Increased cache size by [531] for item [org.apache.catalina.webresources.CachedResource@63e6b451] at [/WEB-INF/classes] making total cache size [531]
+2025-07-23 11:19:26 [restartedMain] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-07-23 11:19:26 [restartedMain] DEBUG o.apache.catalina.core.ContainerBase - Add container child [StandardWrapper[dispatcherServlet]] to container [StandardEngine[Tomcat].StandardHost[localhost].TomcatEmbeddedContext[]]
+2025-07-23 11:19:26 [restartedMain] DEBUG o.a.catalina.session.StandardManager - Persisted data file [C:\Users\super\AppData\Local\Temp\0835C309491F3EC106487D97D2189280ECE52449\servlet-sessions\SESSIONS.ser] was not found
+2025-07-23 11:19:26 [restartedMain] DEBUG org.apache.catalina.mapper.Mapper - Registered host [localhost]
+2025-07-23 11:19:26 [restartedMain] DEBUG o.a.catalina.mapper.MapperListener - Register Wrapper [dispatcherServlet] in Context [] for service [StandardService[Tomcat]]
+2025-07-23 11:19:26 [restartedMain] DEBUG o.a.catalina.mapper.MapperListener - Register Context [] for service [StandardService[Tomcat]]
+2025-07-23 11:19:26 [restartedMain] DEBUG o.a.catalina.mapper.MapperListener - Register host [localhost] at domain [null] for service [StandardService[Tomcat]]
+2025-07-23 11:19:26 [restartedMain] DEBUG _.s.w.s.HandlerMapping.Mappings - 
+	c.h.s.HelloController:
+	{GET [/hello]}: hello(String)
+2025-07-23 11:19:26 [restartedMain] DEBUG _.s.w.s.HandlerMapping.Mappings - 
+	o.s.b.a.w.s.e.BasicErrorController:
+	{ [/error]}: error(HttpServletRequest)
+	{ [/error], produces [text/html]}: errorHtml(HttpServletRequest,HttpServletResponse)
+2025-07-23 11:19:26 [restartedMain] DEBUG _.s.w.s.HandlerMapping.Mappings - 'beanNameHandlerMapping' {}
+2025-07-23 11:19:26 [restartedMain] DEBUG o.apache.catalina.webresources.Cache - Increased cache size by [501] for item [org.apache.catalina.webresources.CachedResource@63fc9be1] at [/] making total cache size [1032]
+2025-07-23 11:19:26 [restartedMain] DEBUG _.s.w.s.HandlerMapping.Mappings - 'resourceHandlerMapping' {/webjars/**=ResourceHttpRequestHandler [classpath [META-INF/resources/webjars/]], /**=ResourceHttpRequestHandler [classpath [META-INF/resources/], classpath [resources/], classpath [static/], classpath [public/], ServletContext [/]]}
+2025-07-23 11:19:26 [restartedMain] INFO  c.h.springdemo.SpringDemoApplication - Started SpringDemoApplication in 0.517 seconds (process running for 390.012)
+2025-07-23 11:21:11 [restartedMain] INFO  c.h.springdemo.SpringDemoApplication - Starting SpringDemoApplication using Java 21.0.7 with PID 9044 (C:\Users\super\hana7\spring\spring-demo\build\classes\java\main started by super in C:\Users\super\hana7\spring\spring-demo)
+2025-07-23 11:21:11 [restartedMain] DEBUG c.h.springdemo.SpringDemoApplication - Running with Spring Boot v3.5.3, Spring v6.2.8
+2025-07-23 11:21:11 [restartedMain] INFO  c.h.springdemo.SpringDemoApplication - No active profile set, falling back to 1 default profile: "default"
+2025-07-23 11:21:11 [restartedMain] DEBUG o.apache.catalina.core.ContainerBase - Add container child [StandardHost[localhost]] to container [StandardEngine[Tomcat]]
+2025-07-23 11:21:11 [restartedMain] DEBUG o.apache.catalina.core.ContainerBase - Add container child [TomcatEmbeddedContext[]] to container [StandardEngine[Tomcat].StandardHost[localhost]]
+2025-07-23 11:21:11 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-07-23 11:21:11 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.42]
+2025-07-23 11:21:11 [restartedMain] DEBUG o.a.catalina.loader.WebappLoader - Starting this Loader
+2025-07-23 11:21:11 [restartedMain] DEBUG o.apache.catalina.webresources.Cache - Increased cache size by [531] for item [org.apache.catalina.webresources.CachedResource@70d48c6e] at [/WEB-INF/classes] making total cache size [531]
+2025-07-23 11:21:11 [restartedMain] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-07-23 11:21:11 [restartedMain] DEBUG o.apache.catalina.core.ContainerBase - Add container child [StandardWrapper[dispatcherServlet]] to container [StandardEngine[Tomcat].StandardHost[localhost].TomcatEmbeddedContext[]]
+2025-07-23 11:21:11 [restartedMain] DEBUG o.a.catalina.session.StandardManager - Persisted data file [C:\Users\super\AppData\Local\Temp\0835C309491F3EC106487D97D2189280ECE52449\servlet-sessions\SESSIONS.ser] was not found
+2025-07-23 11:21:11 [restartedMain] DEBUG org.apache.catalina.mapper.Mapper - Registered host [localhost]
+2025-07-23 11:21:11 [restartedMain] DEBUG o.a.catalina.mapper.MapperListener - Register Wrapper [dispatcherServlet] in Context [] for service [StandardService[Tomcat]]
+2025-07-23 11:21:11 [restartedMain] DEBUG o.a.catalina.mapper.MapperListener - Register Context [] for service [StandardService[Tomcat]]
+2025-07-23 11:21:11 [restartedMain] DEBUG o.a.catalina.mapper.MapperListener - Register host [localhost] at domain [null] for service [StandardService[Tomcat]]
+2025-07-23 11:21:11 [restartedMain] DEBUG _.s.w.s.HandlerMapping.Mappings - 
+	c.h.s.HelloController:
+	{GET [/hello]}: hello(String)
+2025-07-23 11:21:11 [restartedMain] DEBUG _.s.w.s.HandlerMapping.Mappings - 
+	o.s.b.a.w.s.e.BasicErrorController:
+	{ [/error]}: error(HttpServletRequest)
+	{ [/error], produces [text/html]}: errorHtml(HttpServletRequest,HttpServletResponse)
+2025-07-23 11:21:11 [restartedMain] DEBUG _.s.w.s.HandlerMapping.Mappings - 'beanNameHandlerMapping' {}
+2025-07-23 11:21:11 [restartedMain] DEBUG o.apache.catalina.webresources.Cache - Increased cache size by [501] for item [org.apache.catalina.webresources.CachedResource@75859477] at [/] making total cache size [1032]
+2025-07-23 11:21:11 [restartedMain] DEBUG _.s.w.s.HandlerMapping.Mappings - 'resourceHandlerMapping' {/webjars/**=ResourceHttpRequestHandler [classpath [META-INF/resources/webjars/]], /**=ResourceHttpRequestHandler [classpath [META-INF/resources/], classpath [resources/], classpath [static/], classpath [public/], ServletContext [/]]}
+2025-07-23 11:21:11 [restartedMain] INFO  c.h.springdemo.SpringDemoApplication - Started SpringDemoApplication in 0.441 seconds (process running for 495.466)
+2025-07-23 11:21:32 [restartedMain] INFO  c.h.springdemo.SpringDemoApplication - Starting SpringDemoApplication using Java 21.0.7 with PID 19112 (C:\Users\super\hana7\spring\spring-demo\build\classes\java\main started by super in C:\Users\super\hana7\spring\spring-demo)
+2025-07-23 11:21:32 [restartedMain] DEBUG c.h.springdemo.SpringDemoApplication - Running with Spring Boot v3.5.3, Spring v6.2.8
+2025-07-23 11:21:32 [restartedMain] INFO  c.h.springdemo.SpringDemoApplication - No active profile set, falling back to 1 default profile: "default"
+2025-07-23 11:21:34 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-07-23 11:21:34 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.42]
+2025-07-23 11:21:34 [restartedMain] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-07-23 11:21:34 [restartedMain] INFO  c.h.springdemo.SpringDemoApplication - Started SpringDemoApplication in 3.218 seconds (process running for 3.821)
+2025-07-23 11:22:56 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-07-23 11:22:56 [http-nio-8080-exec-1] DEBUG c.hana7.springdemo.HelloController - name =null 
+2025-07-23 11:22:56 [http-nio-8080-exec-1] DEBUG c.hana7.springdemo.HelloController - Debug
+2025-07-23 11:22:56 [http-nio-8080-exec-1] WARN  c.hana7.springdemo.HelloController - Warning
+2025-07-23 11:22:56 [http-nio-8080-exec-1] INFO  c.hana7.springdemo.HelloController - info
+2025-07-23 11:23:07 [http-nio-8080-exec-3] DEBUG com.hana7.springdemo.HiController - Debug
+2025-07-23 11:23:07 [http-nio-8080-exec-3] INFO  com.hana7.springdemo.HiController - Hi! INFO
