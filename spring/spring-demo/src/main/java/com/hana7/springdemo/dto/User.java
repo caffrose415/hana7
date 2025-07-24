@@ -1,7 +1,6 @@
 package com.hana7.springdemo.dto;
 
 import com.hana7.springdemo.validation.Create;
-import com.hana7.springdemo.validation.Update;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

@@ -1,5 +1,33 @@
 @baseUrl = http://localhost:8080
 
+### Post - all
+GET {{baseUrl}}/posts
+
+### Post - add
+POST {{baseUrl}}/posts/3
+Content-Type:application/json
+
+{
+  "title": "newtitle",
+  "content": "newcontent"
+}
+
+### Post - get one
+GET {{baseUrl}}/posts/2
+
+
+### post - update
+PUT {{baseUrl}}/posts/1
+Content-Type: application/json
+
+{
+  "title": "updatetitle",
+  "content": "updatecontent"
+}
+
+### post -delete
+DELETE {{baseUrl}}/posts/1
+
 ### user - all
 GET {{baseUrl}}/users
 

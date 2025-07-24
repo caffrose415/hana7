@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hana7.springdemo.dao.PostDAO">
+
+    <resultMap id="PostMap" type="Post">
+        <id property="id" column="id"/>
+        <result property="title" column="title"/>
+        <result property="content" column="content"/>
+        <result property="date" column="date"/>
+
+        <association property="writer" javaType="User">
+            <id property="id" column="user_id"/>
+            <result property="name" column="name"/>
+            <result property="email" column="email"/>
+            <result property="mobile" column="mobile"/>
+        </association>
+    </resultMap>
+
+    <insert id="writePost" parameterType="Post" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        insert into post(title,content, writer,date) values(#{title},#{content},#{writer.id},now());
+    </insert>
+
+    <select id="getAllPost" resultMap="PostMap">
+        SELECT
+            p.id, p.title, p.content, p.date,
+            u.id AS user_id, u.name, u.email, u.mobile
+        FROM Post p
+                 JOIN User u ON p.writer = u.id
+    </select>
+
+    <update id="updatePost" parameterType="Post">
+        UPDATE Post SET title=#{title}, content=#{content}, date=now()
+        WHERE id=#{id}
+    </update>
+
+    <select id="getPost" parameterType="Integer" resultMap="PostMap">
+        SELECT
+            p.id, p.title, p.content, p.date,
+            u.id AS user_id, u.name, u.email, u.mobile
+        FROM Post p1
+                 JOIN User u ON p.writer = u.id
+        WHERE p.id = #{postId}
+    </select>
+
+    <delete id="deletePost" parameterType="Integer">
+        delete from Post where id = #{id}
+    </delete>
+</mapper>

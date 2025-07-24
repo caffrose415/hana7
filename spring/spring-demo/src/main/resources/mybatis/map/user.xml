@@ -8,7 +8,7 @@
 
     <select id="getUser" resultType="com.hana7.springdemo.dto.User">
         select id, name, mobile, email
-        from User
+        from User where id=#{id}
     </select>
 
     <select id="getAllUser" resultType="com.hana7.springdemo.dto.User">
