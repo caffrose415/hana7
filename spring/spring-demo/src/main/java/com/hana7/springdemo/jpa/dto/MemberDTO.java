@@ -1,0 +1,28 @@
+package com.hana7.springdemo.jpa.dto;
+
+import com.hana7.springdemo.jpa.entity.BloodType;
+import com.hana7.springdemo.jpa.entity.Member;
+
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import lombok.Data;
+
+@Data
+public class MemberDTO {
+	private Long id;
+
+	@NotNull
+	private String nickname;
+
+	@NotBlank
+	@Email
+	private String email;
+
+	private BloodType bloodType;
+
+	Member toEntity(){
+		return Member.builder().id(id).nickname(nickname).email(email).bloodType(bloodType).build();
+	}
+
+}

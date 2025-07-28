@@ -2,18 +2,27 @@ package com.hana7.springdemo.jpa.repository;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Stream;
+
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.test.annotation.Commit;
 
 import com.hana7.springdemo.jpa.entity.Memo;
 
-@DataJpaTest
-class MemoRepositoryTest {
+class MemoRepositoryTest extends RepositoryTest{
 	@Autowired
 	MemoRepository memoRepository;
 
 	@Test
+	@Order(1)
 	public void saveTest(){
 		// give
 		Memo m = Memo.builder().memoText("asdfjkl").build();
@@ -34,5 +43,79 @@ class MemoRepositoryTest {
 		assertEquals(savedMbr, foundMbr);
 		System.out.println("foundM = " + foundM);
 		System.out.println("foundMbr = " + foundMbr);
+	}
+
+	@Test
+	@Commit
+	@Order(2)
+	void add100Test(){
+		List<Memo> list =  Stream.iterate(1,n->n+1).limit(100).map(n->Memo.builder().memoText("Text "+ n).build()).toList();
+
+		memoRepository.saveAll(list);
+
+		assertEquals(100,memoRepository.count());
+	}
+
+	@Test
+	@Order(3)
+	void pagingTest(){
+		Sort sorting = getOrders("Mno");
+		Pageable paging = getPageable(1,sorting);
+		Page<Memo> p1 = memoRepository.findAll(paging);
+
+		p1.stream().forEach(this::print);
+
+		memoRepository.findAll(getPageable(2,sorting)).stream().forEach(this::print);
+	}
+
+	private static Sort getOrders(String field) {
+		Sort sorting = Sort.by(Sort.Order.desc(field));
+		return sorting;
+	}
+
+	private static Pageable getPageable(int pageNo,Sort sorting) {
+		Pageable paging = PageRequest.of(pageNo-1,10,sorting);
+		return paging;
+	}
+
+	private void print(Memo memo){
+		System.out.println(memo.getMno() + ", "+memo.getMemoText());
+	}
+
+	private void printList(List<Memo> list){
+		list.forEach(this::print);
+	}
+	@Test
+	@Order(4)
+	void queryMethodTest(){
+		List<Memo> memo10To20 = memoRepository.findByMnoBetweenOrderByMnoDesc(10,20);
+		printList(memo10To20);
+
+		printList(memoRepository.findByMnoBetween(10,20,getOrders("memoText")));
+	}
+
+	@Test
+	@Order(5)
+	@Commit
+	void deleteTest(){
+		memoRepository.deleteById(100);
+		assertFalse(memoRepository.findById(100).isPresent());
+		memoRepository.deleteByMnoBetween(81,90);
+		assertEquals(89,memoRepository.count());
+
+		long removeCnt = memoRepository.removeByMnoBetween(91,100);
+		System.out.println("removeCnt = " + removeCnt);
+	}
+
+	@Test
+	@Order(6)
+	void queryAnnotationTest(){
+		List<Memo> list = memoRepository.getListOverDesc(70);
+		list.forEach(this::print);
+
+		List<Object[]> listSome = memoRepository.getListSomeDesc();
+		for(Object[] objs : listSome){
+			System.out.println(Arrays.toString(objs));
+		}
 	}
 }

@@ -26,7 +26,7 @@ import lombok.ToString;
 public class Memo extends BaseEntity{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long mno;
+	private int mno;
 
 	@Column(length = 200, nullable = false)
 	private String memoText;

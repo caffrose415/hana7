@@ -1,8 +1,26 @@
 package com.hana7.springdemo.jpa.repository;
 
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import com.hana7.springdemo.jpa.entity.Memo;
 
-public interface MemoRepository extends JpaRepository<Memo, Long> {
+public interface MemoRepository extends JpaRepository<Memo, Integer> {
+	List<Memo> findByMnoBetweenOrderByMnoDesc(int start, int end);
+
+	List<Memo> findByMnoBetween(int start, int end, Sort memoText);
+
+	void deleteByMnoBetween(int start, int end);
+
+	long removeByMnoBetween(int start, int end);
+
+	@Query("select m from Memo m where m.mno > :bound order by m.mno desc")
+	List<Memo> getListOverDesc(@Param("bound")int bound);
+
+	@Query("select m.mno, m.memoText from Memo m order by m.mno desc")
+	List<Object[]> getListSomeDesc();
 }

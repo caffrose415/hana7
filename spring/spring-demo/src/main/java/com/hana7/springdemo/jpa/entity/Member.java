@@ -55,5 +55,8 @@ public class Member extends BaseEntity{
 	private BloodType bloodType;
 
 	@Transient
-	private int auth;
+	@Builder.Default
+	private int auth = 9;
+
+	private String passwd;
 }
