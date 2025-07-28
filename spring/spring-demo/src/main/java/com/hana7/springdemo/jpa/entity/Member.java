@@ -1,13 +1,15 @@
-package com.hana7.springdemo.jpa.member.entity;
+package com.hana7.springdemo.jpa.entity;
 
 import java.time.LocalDateTime;
 
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -17,14 +19,22 @@ import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 @Entity
-@Data
+@DynamicInsert
+@Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Member {
+@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
+public class Member extends BaseEntity{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -33,17 +43,16 @@ public class Member {
 	@ColumnDefault("'Guest'")
 	private String nickname;
 
+	private Short sm;
+
 	@Column(nullable = false)
 	@Email
 	private String email;
 
-	@CreationTimestamp
-	@ColumnDefault("CURRENT_TIMESTAMP(6)")
-	private LocalDateTime createdAt;
+	private Integer x;
 
-	@UpdateTimestamp
-	@Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
-	private LocalDateTime updatedAt;
+	@Enumerated
+	private BloodType bloodType;
 
 	@Transient
 	private int auth;
