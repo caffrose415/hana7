@@ -2,21 +2,18 @@ package com.hana7.springdemo.board.repository;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.List;
+
 import java.util.Optional;
-import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.test.annotation.Rollback;
 
 import com.hana7.springdemo.board.entity.Board;
 import com.hana7.springdemo.board.entity.Reply;
 import com.hana7.springdemo.jpa.repository.RepositoryTest;
-
 
 @Rollback(false)
 class ReplyRepositoryTest extends RepositoryTest {
@@ -26,48 +23,55 @@ class ReplyRepositoryTest extends RepositoryTest {
 	@Autowired
 	BoardRepository boardRepository;
 
-
 	@Test
 	@Order(1)
-	void addTest(){
+	void addTest() {
 		Board board = getBoard();
 		long preCount = repository.countByBoard(board);
-		IntStream.rangeClosed(1,50).forEach(i -> {
-			Reply reply = Reply.builder()
-				.reply("Reply " + i)
-				.board(board)
-				.replyer("Replyer "+ i)
-				.build();
-			repository.save(reply);
-		});
-	}
-
-	@Test
-	@Order(2)
-	void listTest(){
-		Board board = getBoard();
-		List<Reply> replies = repository.findByBoard(board);
-		replies.forEach(System.out::println);
+		repository.saveAll(
+			Stream.iterate(1, n -> n + 1).limit(10)
+				.map(n -> Reply.builder()
+					.reply("Reply" + n)
+					.replyer("Replyer" + n)
+					.board(board)
+					.build()).toList()
+		);
+		assertEquals(preCount + 10, repository.countByBoard(board));
 	}
 
 	@Test
 	@Order(3)
-	void updateTest(){
-		Reply reply = repository.findById(55).orElseThrow();
-		reply.setReply("New Reply!!!!!");
-		reply.setReplyer("New Replyer!!!!!");
-		repository.save(reply);
+	void listTest() {
+		Board board = getBoard();
+		repository.findAllByBoard(board).forEach(this::print);
+	}
+
+	@Test
+	@Order(2)
+	void updateTest() {
+		Board board = getBoard();
+		Reply reply = repository.findRandomByBoard(board.getId()).orElseThrow();
+		reply.setReply("RRRRR");
 	}
 
 	@Test
 	@Order(4)
-	void deleteTest(){
-		repository.deleteById(51);
+	void deleteTest() {
+		// List<Reply> rrr = repository.findByReply("RRRRR");
+		// List<Reply> rrr = repository.findByReply("RRRRR");
+		Reply reply = repository.findFirstByReply("RRRRR").orElseThrow();
+		System.out.println("reply = " + reply);
+		repository.delete(reply);
 	}
 
-	private Board getBoard(){
+
+	private Board getBoard() {
 		Optional<Board> optionalBoard = boardRepository.findById(1);
-		return optionalBoard
-	}
 
+		return optionalBoard.orElseGet(() -> boardRepository.save(Board.builder()
+			.title("Title01")
+			.writer("Writer02")
+			.build()));
+
+	}
 }
