@@ -1,17 +1,15 @@
 package com.hana7.springdemo.board.entity;
 
-import org.hibernate.annotations.ColumnDefault;
-
 import com.hana7.springdemo.jpa.entity.BaseEntity;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
+import jakarta.persistence.ForeignKey;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -19,37 +17,27 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import lombok.experimental.SuperBuilder;
 
 @Entity
 @Builder
-@Getter @Setter
-@ToString
+@Setter @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 @EqualsAndHashCode(callSuper = true)
-public class Board extends BaseEntity {
+public class Reply extends BaseEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
-	@Column(length = 40, nullable = false)
-	private String title;
+	@Column(length = 1000, nullable = false)
+	private String reply;
 
 	@Column(length = 30, nullable = false)
-	private String writer;
+	private String replyer;
 
-	@Column(nullable = false)
-	@ColumnDefault("0")
-	private int hit;
-
-	@OneToOne(mappedBy = "board", cascade = CascadeType.ALL)
-	private BoardContent content;
-
-	public void setContent(BoardContent content) {
-		this.content = content;
-		if (content != null) content.setBoard(this);
-	}
-
-	// @OneToMany
+	@ManyToOne
+	@JoinColumn(name= "board",
+		foreignKey = @ForeignKey(name = "fk_Reply_board"))
+	private Board board;
 }

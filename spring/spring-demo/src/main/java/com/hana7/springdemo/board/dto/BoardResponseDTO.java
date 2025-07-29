@@ -2,11 +2,12 @@ package com.hana7.springdemo.board.dto;
 
 import java.time.LocalDateTime;
 
-import lombok.Builder;
+
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
-@Builder
+@SuperBuilder
 @Getter @Setter
 public class BoardResponseDTO {
 	private int id;
@@ -14,4 +15,6 @@ public class BoardResponseDTO {
 	private String writer;
 	private int hit;
 	private LocalDateTime createdAt;
+	private LocalDateTime updatedAt;
+
 }

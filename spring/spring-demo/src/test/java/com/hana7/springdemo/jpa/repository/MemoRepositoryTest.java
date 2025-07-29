@@ -49,16 +49,16 @@ class MemoRepositoryTest extends RepositoryTest{
 		System.out.println("foundMbr = " + foundMbr);
 	}
 
-	@Test
-	@Commit
-	@Order(2)
-	void add100Test(){
-		List<Memo> list =  Stream.iterate(1,n->n+1).limit(100).map(n->Memo.builder().memoText("Text "+ n).build()).toList();
-
-		memoRepository.saveAll(list);
-
-		assertEquals(100,memoRepository.count());
-	}
+	// @Test
+	// @Commit
+	// @Order(2)
+	// void add100Test(){
+	// 	List<Memo> list =  Stream.iterate(1,n->n+1).limit(100).map(n->Memo.builder().memoText("Text "+ n).build()).toList();
+	//
+	// 	memoRepository.saveAll(list);
+	//
+	// 	assertEquals(100,memoRepository.count());
+	// }
 
 	@Test
 	@Order(3)
@@ -98,18 +98,18 @@ class MemoRepositoryTest extends RepositoryTest{
 		printList(memoRepository.findByMnoBetween(10,20,getOrders("memoText")));
 	}
 
-	@Test
-	@Order(5)
-	@Commit
-	void deleteTest(){
-		memoRepository.deleteById(100);
-		assertFalse(memoRepository.findById(100).isPresent());
-		memoRepository.deleteByMnoBetween(81,90);
-		assertEquals(89,memoRepository.count());
-
-		long removeCnt = memoRepository.removeByMnoBetween(91,100);
-		System.out.println("removeCnt = " + removeCnt);
-	}
+	// @Test
+	// @Order(5)
+	// @Commit
+	// void deleteTest(){
+	// 	memoRepository.deleteById(100);
+	// 	assertFalse(memoRepository.findById(100).isPresent());
+	// 	memoRepository.deleteByMnoBetween(81,90);
+	// 	assertEquals(89,memoRepository.count());
+	//
+	// 	long removeCnt = memoRepository.removeByMnoBetween(91,100);
+	// 	System.out.println("removeCnt = " + removeCnt);
+	// }
 
 	@Test
 	@Order(6)

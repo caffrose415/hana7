@@ -1,0 +1,24 @@
+package com.hana7.springdemo.board.dto;
+
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
+
+@Builder
+@Getter @Setter
+public class BoardRequestDTO {
+	private int id;
+
+	@NotBlank
+	@Size(min = 1, max = 40)
+	private String title;
+
+	@NotBlank
+	@Size(min = 1, max = 30)
+	private String writer;
+
+	@NotBlank
+	private String content;
+}

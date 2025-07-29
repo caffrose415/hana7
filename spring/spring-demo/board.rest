@@ -1,0 +1,53 @@
+@baseUrl=http://localhost:8080
+
+### add
+POST {{baseUrl}}/replies/1
+Content-Type: application/json
+
+{
+  "reply": "asdfsdf",
+  "replyer": "asdfasdf"
+}
+
+
+### all
+GET {{baseUrl}}/boards?page=1&countPerPage=10
+
+### detail
+GET {{baseUrl}}/boards/1
+
+
+### add
+POST {{baseUrl}}/boards
+Content-Type: application/json
+
+{
+  "title": "title03",
+  "writer": "hong",
+  "content": "content...."
+}
+
+> {%
+    client.global.set("newerId", response.body.id);
+%}
+
+
+
+### update
+PATCH {{baseUrl}}/boards/{{newerId}}
+Content-Type: application/json
+
+{
+  "title": "title03 - up",
+  "writer": "hong-up",
+  "content": "content....up!!"
+}
+
+### user - get one
+GET {{baseUrl}}/users/{{newerId}}
+
+### user - delete
+DELETE {{baseUrl}}/users/{{newerId}}
+
+### get 1
+GET {{baseUrl}}/posts/1
