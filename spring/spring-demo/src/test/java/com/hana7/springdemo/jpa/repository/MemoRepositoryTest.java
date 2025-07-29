@@ -14,8 +14,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.test.annotation.Commit;
+import org.springframework.util.StringUtils;
 
 import com.hana7.springdemo.jpa.entity.Memo;
+import com.hana7.springdemo.jpa.entity.QMemo;
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.dsl.BooleanExpression;
 
 class MemoRepositoryTest extends RepositoryTest{
 	@Autowired
@@ -117,5 +121,33 @@ class MemoRepositoryTest extends RepositoryTest{
 		for(Object[] objs : listSome){
 			System.out.println(Arrays.toString(objs));
 		}
+	}
+
+	@Test
+	@Order(7)
+	void queryDslTest(){
+		Iterable<Memo> memo5s = memoRepository.findAll(QMemo.memo.memoText.contains("5"));
+		memo5s.forEach(this::print);
+
+		memoRepository.findAll(QMemo.memo.mno.goe(60).and(QMemo.memo.memoText.contains("5"))).forEach(this::print);
+
+		BooleanBuilder bb = new BooleanBuilder();
+		// BooleanExpression over60 = QMemo.memo.mno.goe(60);
+		BooleanExpression over60 = getBoolExp(60);
+		bb.and(over60).and(getContainsText("5"));
+	}
+
+	private BooleanExpression getBoolExp(int mno){
+		if(mno>0){
+			return QMemo.memo.mno.goe(mno);
+		}
+		return null;
+	}
+
+	private BooleanExpression getContainsText(String txt){
+		if(StringUtils.hasText(txt)){
+			return QMemo.memo.memoText.contains(txt);
+		}
+		return null;
 	}
 }

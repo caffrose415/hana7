@@ -5,5 +5,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-class RepositoryTest {
+public class RepositoryTest {
+	protected <T> void print(T entity){
+		System.out.println(entity);
+	}
 }
