@@ -2,20 +2,19 @@ package com.hana7.springdemo.board.repository;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-
 import java.util.Optional;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.Rollback;
+import org.springframework.test.annotation.Commit;
 
 import com.hana7.springdemo.board.entity.Board;
 import com.hana7.springdemo.board.entity.Reply;
 import com.hana7.springdemo.jpa.repository.RepositoryTest;
 
-@Rollback(false)
+// @Rollback(false)
 class ReplyRepositoryTest extends RepositoryTest {
 	@Autowired
 	ReplyRepository repository;
@@ -32,7 +31,7 @@ class ReplyRepositoryTest extends RepositoryTest {
 			Stream.iterate(1, n -> n + 1).limit(10)
 				.map(n -> Reply.builder()
 					.reply("Reply" + n)
-					.replyer("Replyer" + n)
+					.replyer(board.getWriter())
 					.board(board)
 					.build()).toList()
 		);
@@ -48,6 +47,7 @@ class ReplyRepositoryTest extends RepositoryTest {
 
 	@Test
 	@Order(2)
+	@Commit
 	void updateTest() {
 		Board board = getBoard();
 		Reply reply = repository.findRandomByBoard(board.getId()).orElseThrow();
@@ -58,19 +58,17 @@ class ReplyRepositoryTest extends RepositoryTest {
 	@Order(4)
 	void deleteTest() {
 		// List<Reply> rrr = repository.findByReply("RRRRR");
-		// List<Reply> rrr = repository.findByReply("RRRRR");
 		Reply reply = repository.findFirstByReply("RRRRR").orElseThrow();
 		System.out.println("reply = " + reply);
 		repository.delete(reply);
 	}
-
 
 	private Board getBoard() {
 		Optional<Board> optionalBoard = boardRepository.findById(1);
 
 		return optionalBoard.orElseGet(() -> boardRepository.save(Board.builder()
 			.title("Title01")
-			.writer("Writer02")
+			.writer(null)
 			.build()));
 
 	}

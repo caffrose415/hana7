@@ -7,8 +7,10 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import lombok.experimental.SuperBuilder;
 
 @Data
+@SuperBuilder
 public class MemberDTO {
 	private Long id;
 
@@ -21,8 +23,7 @@ public class MemberDTO {
 
 	private BloodType bloodType;
 
-	Member toEntity(){
+	protected Member toEntity() {
 		return Member.builder().id(id).nickname(nickname).email(email).bloodType(bloodType).build();
 	}
-
 }

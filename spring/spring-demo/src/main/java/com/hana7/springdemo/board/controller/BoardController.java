@@ -2,6 +2,7 @@ package com.hana7.springdemo.board.controller;
 
 import java.util.List;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,18 +16,21 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.hana7.springdemo.board.dto.BoardRequestDTO;
 import com.hana7.springdemo.board.dto.BoardResponseDTO;
+import com.hana7.springdemo.board.dto.ErrorResponseDTO;
 import com.hana7.springdemo.board.service.BoardService;
 
 @RestController
 @RequestMapping("/boards")
 public class BoardController {
 	private final BoardService service;
+
 	public BoardController(BoardService service) {
 		this.service = service;
 	}
 
 	@GetMapping
-	public List<BoardResponseDTO> getPageList(@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "10") int countPerPage) {
+	public List<BoardResponseDTO> getPageList(@RequestParam(defaultValue = "1") int page,
+		@RequestParam(defaultValue = "10") int countPerPage) {
 		return service.getPageList(page, countPerPage);
 	}
 
@@ -36,8 +40,13 @@ public class BoardController {
 	}
 
 	@GetMapping("/{id}")
-	public BoardResponseDTO getBoard(@PathVariable int id) {
-		return service.getBoard(id);
+	public ResponseEntity<?> getBoard(@PathVariable int id) {
+		BoardResponseDTO board = service.getBoard(id);
+		if (board != null)
+			return ResponseEntity.ok(board);
+
+		return ResponseEntity.status(404).body(
+			new ErrorResponseDTO(id + "를 찾을 수 없습니다.", "NOT_FOUND"));
 	}
 
 	@PatchMapping("/{id}")

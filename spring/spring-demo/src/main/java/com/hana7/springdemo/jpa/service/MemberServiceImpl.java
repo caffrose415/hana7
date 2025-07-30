@@ -7,16 +7,20 @@ import org.springframework.stereotype.Service;
 import com.hana7.springdemo.jpa.dao.MemberDAO;
 import com.hana7.springdemo.jpa.dto.MemberDTO;
 import com.hana7.springdemo.jpa.dto.MemberRequestDTO;
+import com.hana7.springdemo.jpa.dto.MemberResponseDTO;
+import com.hana7.springdemo.jpa.entity.Member;
 
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class MemberServiceImpl implements MemberService{
+public class MemberServiceImpl implements MemberService {
 	private final MemberDAO dao;
+
 	@Override
-	public List<MemberDTO> findAll() {
-		return List.of();
+	public List<MemberResponseDTO> findAll(String keyword, int page, int counterPage) {
+
+		return dao.findAll(keyword, page, counterPage);
 	}
 
 	@Override
@@ -30,7 +34,20 @@ public class MemberServiceImpl implements MemberService{
 	}
 
 	@Override
-	public void delete() {
+	public void remove(long id) {
+		dao.delete(id);
+	}
 
+	@Override
+	public List<MemberDetailResponseDTO> findAll(long id) {
+		return List.of();
+	}
+
+	public static MemberResponseDTO toDTO(Member member) {
+		return MemberResponseDTO.builder()
+			.id(member.getId())
+			.nickname(member.getNickname())
+			.bloodType(member.getBloodType())
+			.build();
 	}
 }

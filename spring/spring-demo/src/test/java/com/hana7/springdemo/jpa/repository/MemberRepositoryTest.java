@@ -40,4 +40,9 @@ class MemberRepositoryTest {
 		System.out.println("foundM = " + foundM);
 		System.out.println("foundMbr = " + foundMbr);
 	}
+
+	@Test
+	void listTest(){
+		SearchCond cond = 
+	}
 }

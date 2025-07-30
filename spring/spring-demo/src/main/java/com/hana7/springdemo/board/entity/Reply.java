@@ -1,6 +1,11 @@
 package com.hana7.springdemo.board.entity;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.hana7.springdemo.jpa.entity.BaseEntity;
+import com.hana7.springdemo.jpa.entity.Member;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -10,23 +15,20 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 @Entity
 @Builder
-@Setter @Getter
+@Setter
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 @EqualsAndHashCode(callSuper = true)
-@Table(name = "reply")
 public class Reply extends BaseEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,11 +37,27 @@ public class Reply extends BaseEntity {
 	@Column(length = 1000, nullable = false)
 	private String reply;
 
-	@Column(length = 30, nullable = false)
-	private String replyer;
+	// @Column(length = 30, nullable = false)
+	// private String replyer;
+	@ManyToOne
+	@JoinColumn(name = "replyer", nullable = false, foreignKey = @ForeignKey(name = "fk_Reply_replyer_Member"))
+	@JsonBackReference
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	private Member replyer;
 
 	@ManyToOne
-	@JoinColumn(name= "board",
+	@JoinColumn(name = "board",
 		foreignKey = @ForeignKey(name = "fk_Reply_board"))
+	// @ToString.Exclude
 	private Board board;
+
+	@Override
+	public String toString() {
+		return "Reply{" +
+			"id=" + id +
+			", reply='" + reply + '\'' +
+			", replyer='" + replyer + '\'' +
+			", board=" + board.getId() +
+			'}';
+	}
 }

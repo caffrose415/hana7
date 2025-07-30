@@ -1,24 +1,27 @@
 package com.hana7.springdemo.jpa.entity;
 
-import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
-import org.hibernate.annotations.UpdateTimestamp;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.hana7.springdemo.board.entity.Board;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Transient;
 import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,36 +30,42 @@ import lombok.ToString;
 
 @Entity
 @DynamicInsert
-@Getter
-@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
-public class Member extends BaseEntity{
+public class Member extends BaseEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(length = 31,nullable = false)
+	@Column(length = 31, nullable = false)
 	@ColumnDefault("'Guest'")
 	private String nickname;
 
-	private Short sm;
-
-	@Column(nullable = false)
+	@Column(nullable = false, unique = true)
 	@Email
 	private String email;
 
-	private Integer x;
-
-	@Enumerated
+	@Enumerated(EnumType.STRING)
 	private BloodType bloodType;
+
+	private String passwd;
 
 	@Transient
 	@Builder.Default
 	private int auth = 9;
 
-	private String passwd;
+	@OneToMany(mappedBy = "writer", cascade = CascadeType.ALL)
+	@Builder.Default
+	@JsonManagedReference
+	private List<Board> boards = new ArrayList<>();
+
+	// @OneToMany(mappedBy = "replyer")
+	// @Builder.Default
+	// @JsonManagedReference
+	// private List<Reply> replies = new ArrayList<>();
 }
