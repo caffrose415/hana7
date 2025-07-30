@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.hana7.springdemo.jpa.dao.MemberDAO;
 import com.hana7.springdemo.jpa.dto.MemberDTO;
+import com.hana7.springdemo.jpa.dto.MemberDetailResponseDTO;
 import com.hana7.springdemo.jpa.dto.MemberRequestDTO;
 import com.hana7.springdemo.jpa.dto.MemberResponseDTO;
 import com.hana7.springdemo.jpa.entity.Member;
@@ -39,8 +40,8 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public List<MemberDetailResponseDTO> findAll(long id) {
-		return List.of();
+	public MemberDetailResponseDTO getDetail(long id) {
+		return dao.findDetailById(id);
 	}
 
 	public static MemberResponseDTO toDTO(Member member) {

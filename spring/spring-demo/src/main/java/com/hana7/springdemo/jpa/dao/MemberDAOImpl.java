@@ -8,8 +8,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
+import com.hana7.springdemo.board.dto.BoardSimpleDTO;
 import com.hana7.springdemo.board.dto.PageResponseDTO;
+import com.hana7.springdemo.board.dto.ReplySimpleDTO;
 import com.hana7.springdemo.jpa.dto.MemberDTO;
+import com.hana7.springdemo.jpa.dto.MemberDetailResponseDTO;
 import com.hana7.springdemo.jpa.dto.MemberRequestDTO;
 import com.hana7.springdemo.jpa.dto.MemberResponseDTO;
 import com.hana7.springdemo.jpa.entity.Member;
@@ -50,6 +53,37 @@ public class MemberDAOImpl implements MemberDAO {
 	@Override
 	public void delete(long id) {
 		repository.deleteById(id);
+	}
+
+	@Override
+	public MemberDetailResponseDTO findDetailById(long id) {
+		Member member = repository.findById(id).orElseThrow();
+
+		return MemberDetailResponseDTO.builder()
+			.id(member.getId())
+			.nickname(member.getNickname())
+			.email(member.getEmail())
+			.bloodType(member.getBloodType() != null ? member.getBloodType().name() : null)
+
+			.boards(member.getBoards().stream()
+				.map(board -> BoardSimpleDTO.builder()
+					.id(board.getId())
+					.title(board.getTitle())
+					.createdAt(board.getCreatedAt())
+					.build())
+				.toList())
+
+			.replies(member.getBoards().stream()
+				.flatMap(board -> board.getReplies().stream())
+				.filter(reply -> reply.getReplyer().getId().equals(member.getId()))
+				.map(reply -> ReplySimpleDTO.builder()
+					.id(reply.getId())
+					.reply(reply.getReply())
+					.createdAt(reply.getCreatedAt())
+					.build())
+				.toList())
+
+			.build();
 	}
 
 	public static MemberResponseDTO toDTO(Member member) {

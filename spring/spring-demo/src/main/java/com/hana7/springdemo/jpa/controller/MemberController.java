@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.hana7.springdemo.jpa.dto.MemberDetailResponseDTO;
 import com.hana7.springdemo.jpa.dto.MemberRequestDTO;
 import com.hana7.springdemo.jpa.dto.MemberResponseDTO;
 import com.hana7.springdemo.jpa.service.MemberService;
@@ -39,8 +40,8 @@ public class MemberController {
 	}
 
 	@GetMapping("/{id}/detail")
-	public List<MemberDetailResponseDTO> memberDetail(@PathVariable long id) {
-		memberService.findAll(id);
+	public MemberDetailResponseDTO memberDetail(@PathVariable long id) {
+		return memberService.getDetail(id);
 	}
 
 }
