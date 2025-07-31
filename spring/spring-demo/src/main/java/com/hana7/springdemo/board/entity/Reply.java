@@ -3,12 +3,12 @@ package com.hana7.springdemo.board.entity;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.hana7.springdemo.jpa.entity.BaseEntity;
 import com.hana7.springdemo.jpa.entity.Member;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.ForeignKey;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -41,11 +41,10 @@ public class Reply extends BaseEntity {
 	// private String replyer;
 	@ManyToOne
 	@JoinColumn(name = "replyer", nullable = false, foreignKey = @ForeignKey(name = "fk_Reply_replyer_Member"))
-	@JsonBackReference
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Member replyer;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "board",
 		foreignKey = @ForeignKey(name = "fk_Reply_board"))
 	// @ToString.Exclude

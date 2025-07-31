@@ -6,10 +6,8 @@ import java.util.List;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.hana7.springdemo.board.entity.Board;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -35,7 +33,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString(callSuper = true)
+@ToString(callSuper = true, exclude = {"boards"})
 @EqualsAndHashCode(callSuper = true)
 public class Member extends BaseEntity {
 	@Id
@@ -59,13 +57,6 @@ public class Member extends BaseEntity {
 	@Builder.Default
 	private int auth = 9;
 
-	@OneToMany(mappedBy = "writer", cascade = CascadeType.ALL)
-	@Builder.Default
-	@JsonManagedReference
+	@OneToMany(mappedBy = "writer")
 	private List<Board> boards = new ArrayList<>();
-
-	// @OneToMany(mappedBy = "replyer")
-	// @Builder.Default
-	// @JsonManagedReference
-	// private List<Reply> replies = new ArrayList<>();
 }

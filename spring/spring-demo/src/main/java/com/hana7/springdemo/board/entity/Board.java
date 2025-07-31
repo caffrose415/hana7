@@ -5,13 +5,13 @@ import java.util.List;
 
 import org.hibernate.annotations.ColumnDefault;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.hana7.springdemo.jpa.entity.BaseEntity;
 import com.hana7.springdemo.jpa.entity.Member;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.ForeignKey;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -32,7 +32,7 @@ import lombok.ToString;
 @Builder
 @Getter
 @Setter
-@ToString
+@ToString(exclude = {"writer", "replies"})
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
@@ -46,9 +46,8 @@ public class Board extends BaseEntity {
 
 	// @Column(length = 30, nullable = false)
 	// private String writer;
-	@ManyToOne
-	@JoinColumn(name = "writer", nullable = false, foreignKey = @ForeignKey(name = "fk_Board_writer_Member"))
-	@JsonBackReference
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "writer", foreignKey = @ForeignKey(name = "fk_Board_writer_Member", foreignKeyDefinition = "foreign key (writer) references Member(id) on DELETE cascade on UPDATE set null"))
 	private Member writer;
 
 	@Column(nullable = false)

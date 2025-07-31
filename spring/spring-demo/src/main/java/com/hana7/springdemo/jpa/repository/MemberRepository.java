@@ -1,12 +1,19 @@
 package com.hana7.springdemo.jpa.repository;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.querydsl.QuerydslPredicateExecutor;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.hana7.springdemo.jpa.entity.Member;
 
-public interface MemberRepository extends JpaRepository<Member, Long> {
-	Page<Member> findByNicknameContainingIgnoreCaseOrEmailContainingIgnoreCase(String keyword, String keyword1,
-		Pageable pageable);
+public interface MemberRepository extends JpaRepository<Member, Long>, QuerydslPredicateExecutor<Member> {
+
+	@Query("delete from Member where id = :id")
+	@Modifying
+	@Transactional
+	int removeById(@Param("id") long id);
+	// Optional<Member> findById(Long id);
 }
