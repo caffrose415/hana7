@@ -14,6 +14,7 @@ import org.springframework.data.domain.Sort;
 
 import com.hana7.springdemo.board.entity.Board;
 import com.hana7.springdemo.board.entity.BoardContent;
+import com.hana7.springdemo.board.entity.Hashtag;
 import com.hana7.springdemo.jpa.entity.BloodType;
 import com.hana7.springdemo.jpa.entity.Member;
 import com.hana7.springdemo.jpa.repository.MemberRepository;
@@ -26,6 +27,8 @@ class BoardRepositoryTest extends RepositoryTest {
 	BoardRepository repository;
 	@Autowired
 	MemberRepository memberRepository;
+	@Autowired
+	HashtagRepository hashtagRepository;
 
 	@Test
 	@Order(1)
@@ -67,5 +70,21 @@ class BoardRepositoryTest extends RepositoryTest {
 			.bloodType(BloodType.B)
 			.build()
 		));
+	}
+
+	@Test
+	@Order(3)
+	void hashtagTest() {
+		Hashtag hi = hashtagRepository.save(Hashtag.builder().tag("Hi").build());
+		Hashtag hello = hashtagRepository.save(Hashtag.builder().tag("Hello").build());
+		Board board1 = repository.findById(1).orElseThrow();
+		Board board2 = repository.findById(2).orElseThrow();
+
+		hi.addBoard(board1);
+		hi.addBoard(board2);
+		hello.addBoard(board1);
+		hello.addBoard(board2);
+
+		List<Hashtag> hashtags = hashtagRepository.findAllByBoardId(board1.getId());
 	}
 }
