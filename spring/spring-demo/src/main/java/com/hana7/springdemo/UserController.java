@@ -14,44 +14,48 @@ import com.hana7.springdemo.dto.User;
 import com.hana7.springdemo.service.UserService;
 import com.hana7.springdemo.validation.Update;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.extern.log4j.Log4j2;
 
 @RestController
 @RequestMapping("/users")
 @Log4j2
+@Tag(name = "사용자 APIs", description = "사용자 목록/등록/수정/삭제")
 public class UserController {
 	private UserService service;
 
-	public UserController(UserService service){
-		this.service=service;
+	public UserController(UserService service) {
+		this.service = service;
 	}
+
 	@PostMapping("")
-	public User registry(@RequestBody @Valid User user){
-		log.debug("user={}",user);
+	@Tag(name = "사용자 가입")
+	public User registry(@RequestBody @Valid User user) {
+		log.debug("user={}", user);
 		service.insert(user);
 		return user;
 	}
 
 	@GetMapping("")
-	public User[] findAll(){
+	public User[] findAll() {
 		return service.getAllUser();
 	}
 
 	@GetMapping("/{id}")
-	public User findUser(@PathVariable("id") Integer id){
-		log.info("GET={}",id);
+	public User findUser(@PathVariable("id") Integer id) {
+		log.info("GET={}", id);
 		return service.getUser(id);
 	}
 
 	@DeleteMapping("/{id}")
-	public int deleteUser(@PathVariable("id") Integer id){
+	public int deleteUser(@PathVariable("id") Integer id) {
 		service.deleteUser(id);
 		return id;
 	}
 
 	@PutMapping("/{id}")
-	public User updateUser(@RequestBody @Validated(Update.class) User user, @PathVariable("id") Integer id){
+	public User updateUser(@RequestBody @Validated(Update.class) User user, @PathVariable("id") Integer id) {
 		user.setId(id);
 		service.updateUser(user);
 		return user;

@@ -34,7 +34,7 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public MemberDTO findOne(long id) {
-		return null;
+		return toDetailDTO(dao.findOne(id));
 	}
 
 	@Override
@@ -51,7 +51,7 @@ public class MemberServiceImpl implements MemberService {
 			.build();
 	}
 
-	private static MemberDTO toDetailDTO(Member member) {
+	public static MemberDTO toDetailDTO(Member member) {
 		return MemberDetailResponseDTO.builder()
 			.id(member.getId())
 			.nickname(member.getNickname())

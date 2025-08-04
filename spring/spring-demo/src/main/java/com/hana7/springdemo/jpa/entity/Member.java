@@ -59,4 +59,11 @@ public class Member extends BaseEntity {
 
 	@OneToMany(mappedBy = "writer")
 	private List<Board> boards = new ArrayList<>();
+
+	public List<Board> getBoards() {
+		if (this.boards == null) {
+			return new ArrayList<>();
+		}
+		return this.boards;
+	}
 }
