@@ -1,8 +1,5 @@
 package com.hana7.springdemo.jpa.entity;
 
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.ForeignKey;
 import jakarta.persistence.GeneratedValue;
@@ -16,27 +13,32 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
 @Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
-public class MemberImage {
+public class MemberImage extends BaseEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private Integer id;
 
-	private String orgName;
+	private String orgname;
+	private String savename;
+	private String savedir;
 
-	private String saveName;
-
-	private String saveDir;
-
-	private String thumbnailName;
-
-	@ManyToOne
-	@JoinColumn(name = "member", nullable = false, foreignKey = @ForeignKey(name = "fk_MemberImage_Member"))
-	@OnDelete(action = OnDeleteAction.CASCADE)
+	@ManyToOne()
+	@JoinColumn(
+		name = "member",
+		foreignKey = @ForeignKey(
+			name = "fk_MemberImage_member",
+			foreignKeyDefinition = """
+					foreign key (member)
+					   references Member(id)
+					    on DELETE cascade on UPDATE cascade
+				"""
+		)
+	)
 	private Member member;
 }

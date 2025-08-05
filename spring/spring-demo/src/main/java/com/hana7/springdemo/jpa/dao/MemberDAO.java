@@ -17,5 +17,5 @@ public interface MemberDAO {
 
 	int remove(long id);
 
-	void saveAll(List<MemberImage> list);
+	List<MemberImage> uploadImages(Long memberId, List<MemberImage> memberImages);
 }

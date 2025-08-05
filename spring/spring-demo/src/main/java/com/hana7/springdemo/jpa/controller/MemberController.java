@@ -31,8 +31,8 @@ import net.coobird.thumbnailator.Thumbnailator;
 
 import com.hana7.springdemo.board.dto.SearchCond;
 import com.hana7.springdemo.jpa.dto.MemberDTO;
+import com.hana7.springdemo.jpa.dto.MemberImageDTO;
 import com.hana7.springdemo.jpa.dto.UploadRequestDTO;
-import com.hana7.springdemo.jpa.dto.UploadResponseDTO;
 import com.hana7.springdemo.jpa.service.MemberService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -40,12 +40,12 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequestMapping("/members")
 @RequiredArgsConstructor
-@Log4j2
+@Slf4j
 public class MemberController {
 	private final MemberService service;
 
@@ -54,43 +54,39 @@ public class MemberController {
 
 	@Tag(name = "file upload")
 	@Operation(summary = "Upload POST Member")
-	@PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-	public List<UploadResponseDTO> upload(@RequestParam("memberId") long memberId, UploadRequestDTO dto) {
+	@PostMapping(value = "/{id}/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	public List<MemberImageDTO> upload(UploadRequestDTO dto, @PathVariable Long id) {
 		log.info("upfileDto={}", dto);
 		log.info("uploadPath={}", uploadPath);
+		List<MemberImageDTO> upfiles = new ArrayList<>();
 
-		List<UploadResponseDTO> upfiles = new ArrayList<>();
 		if (dto.getFiles() != null) {
 			dto.getFiles().forEach(file -> {
 				String orgFname = file.getOriginalFilename();
 				log.info("orgName={}", orgFname + "::" + file.getSize() / 1024);
 				String uuid = UUID.randomUUID().toString();
 				String savedFname = uuid + "_" + orgFname;
-
 				try {
-					Path uploadDir = getTodayPath(uploadPath);
+					String savedir = getTodayPath();
+					Path uploadDir = Paths.get(uploadPath + File.separator + savedir);
+					Path upfilePath = Paths.get(uploadPath + File.separator + savedir + File.separator + savedFname);
 					if (!Files.exists(uploadDir)) {
 						Files.createDirectories(uploadDir);
 					}
-					Path upfilePath = uploadDir.resolve(savedFname);
 					file.transferTo(upfilePath);
 
 					boolean isImage = Files.probeContentType(upfilePath).startsWith("image");
-					String thumbnailName = null;
 					if (isImage) {
-						thumbnailName = "thumb_" + savedFname;
-						File thumbnail = new File(uploadDir.toFile(), thumbnailName);
+						File thumbnail = new File(uploadPath + File.separator + savedir + File.separator,
+							"thumb_" + uuid + "_" + orgFname);
 						Thumbnailator.createThumbnail(upfilePath.toFile(), thumbnail, 200, 200);
 					}
 
-					upfiles.add(UploadResponseDTO.builder()
-						.orgFname(orgFname)
-						.fname(savedFname)
-						.isImage(isImage)
-						.saveDir(getToday())
-						.thumbnailName(thumbnailName)
-						.build()
-					);
+					upfiles.add(MemberImageDTO.builder()
+						.orgname(orgFname)
+						.savename(savedFname)
+						.savedir(savedir)
+						.build());
 
 				} catch (IOException e) {
 					log.error(e.getMessage());
@@ -98,28 +94,28 @@ public class MemberController {
 				}
 			});
 		}
-		service.save(memberId, upfiles);
+
+		if (!upfiles.isEmpty()) {
+			service.uploadImages(id, upfiles);
+		}
+
 		return upfiles;
 	}
 
-	private Path getTodayPath(String basePath) {
+	private String getTodayPath() {
 		LocalDateTime now = LocalDateTime.now();
-		String datePath = String.format("%04d/%02d/%02d", now.getYear(), now.getMonthValue(), now.getDayOfMonth());
-		return Paths.get(basePath, datePath);
-	}
-
-	private String getToday() {
-		LocalDateTime now = LocalDateTime.now();
-		return String.format("%04d/%02d/%02d", now.getYear(), now.getMonthValue(), now.getDayOfMonth());
+		return String.format("%4d/%02d/%02d", now.getYear(), now.getMonthValue(), now.getDayOfMonth());
 	}
 
 	@Tag(name = "Download File")
 	@Operation(summary = "Download Image")
 	@GetMapping("/view/{fileName}")
-	public ResponseEntity<Resource> viewFile(@PathVariable String fileName) throws IOException {
-		Resource resource = new FileSystemResource(uploadPath + File.separator + fileName);
+	public ResponseEntity<Resource> viewFile(@PathVariable String fileName,
+		@RequestParam(required = true) String savedir) throws IOException {
+		Resource resource = new FileSystemResource(uploadPath + File.separator + savedir + File.separator + fileName);
 		HttpHeaders headers = new HttpHeaders();
 		headers.add(HttpHeaders.CONTENT_TYPE, Files.probeContentType(resource.getFile().toPath()));
+
 		return ResponseEntity.ok().headers(headers).body(resource);
 	}
 
@@ -128,14 +124,14 @@ public class MemberController {
 	@GetMapping("/delete/{fileName}")
 	public Map<String, Boolean> deleteFile(@PathVariable String fileName) throws IOException {
 		Map<String, Boolean> resMap = new HashMap<>();
+
 		Resource resource = new FileSystemResource(uploadPath + File.separator + fileName);
 		resMap.put(resource.getFile().getName(), resource.getFile().delete());
-
 		if (Files.probeContentType(resource.getFile().toPath()).startsWith("image")) {
 			File thumbnail = new File(uploadPath, "thumb_" + fileName);
-
 			resMap.put(thumbnail.getName(), thumbnail.delete());
 		}
+		System.out.println("resMap = " + resMap);
 		return resMap;
 	}
 

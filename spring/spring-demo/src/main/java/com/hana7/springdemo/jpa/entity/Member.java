@@ -8,6 +8,7 @@ import org.hibernate.annotations.DynamicInsert;
 
 import com.hana7.springdemo.board.entity.Board;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -58,15 +59,16 @@ public class Member extends BaseEntity {
 	private int auth = 9;
 
 	@OneToMany(mappedBy = "writer")
-	private List<Board> boards = new ArrayList<>();
-	
-	@OneToMany(mappedBy = "member")
-	private List<MemberImage> memberImages = new ArrayList<>();
+	// @OnDelete(action = OnDeleteAction.CASCADE)
+	private List<Board> boards;
+
+	@OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+	private List<MemberImage> images;
 
 	public List<Board> getBoards() {
-		if (this.boards == null) {
+		if (this.boards == null)
 			return new ArrayList<>();
-		}
+
 		return this.boards;
 	}
 }

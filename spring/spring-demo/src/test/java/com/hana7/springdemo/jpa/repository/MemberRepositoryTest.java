@@ -2,6 +2,7 @@ package com.hana7.springdemo.jpa.repository;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.List;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.Test;
@@ -20,17 +21,20 @@ class MemberRepositoryTest extends RepositoryTest {
 	MemberRepository repository;
 
 	@Test
-	void imageTest() {
+	@Commit
+	void imagesTest() {
 		Member mbr = repository.findById(1L).orElseThrow();
-		Stream.iterate(1, n -> n + 1).limit(5).map(n -> MemberImage.builder()
-			.orgName("orgname" + n)
-			.saveName("savename" + n)
-			.saveDir("2025/08/05")
-			.member(mbr)
-			.build()
-		).toList();
+		List<MemberImage> images = Stream.iterate(1, n -> n + 1)
+			.limit(5)
+			.map(n -> MemberImage.builder()
+				.orgname("orgname" + n)
+				.savename("savename" + n)
+				.savedir("2025/08/05")
+				.member(mbr)
+				.build()
+			).toList();
 
-		mbr.setImages(image)
+		mbr.setImages(images);
 	}
 
 	@Test
