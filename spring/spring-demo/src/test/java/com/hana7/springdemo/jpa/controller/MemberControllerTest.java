@@ -28,10 +28,18 @@ class MemberControllerTest {
 
 	@Test
 	@Order(2)
-	void deleteNotFoundTest() throws Exception {
+	void deleteTest() throws Exception {
 		mockMvc.perform(delete("/members/2"))
 			.andExpect(status().isOk())
 			.andExpect(content().string("1"))
+			.andDo(print());
+	}
+
+	@Test
+	@Order(3)
+	void deleteNotFoundTest() throws Exception {
+		mockMvc.perform(delete("/members/99999"))
+			.andExpect(status().isNotFound())
 			.andDo(print());
 	}
 
@@ -50,3 +58,4 @@ class MemberControllerTest {
 			.andExpect(jsonPath("$[1].nickname").value("hongx"))
 			.andDo(print());
 	}
+}

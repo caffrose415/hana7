@@ -47,7 +47,16 @@ public class Board extends BaseEntity {
 	// @Column(length = 30, nullable = false)
 	// private String writer;
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "writer", foreignKey = @ForeignKey(name = "fk_Board_writer_Member", foreignKeyDefinition = "foreign key (writer) references Member(id) on DELETE cascade on UPDATE set null"))
+	@JoinColumn(name = "writer",
+		foreignKey = @ForeignKey(
+			name = "fk_Board_writer_Member",
+			foreignKeyDefinition = """
+					foreign key (writer)
+					   references Member(id)
+					    on DELETE cascade on UPDATE set null
+				"""
+		)
+	)
 	private Member writer;
 
 	@Column(nullable = false)
