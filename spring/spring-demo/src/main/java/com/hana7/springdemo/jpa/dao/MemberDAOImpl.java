@@ -4,11 +4,14 @@ import java.util.List;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import com.hana7.springdemo.board.dto.SearchCond;
 import com.hana7.springdemo.jpa.entity.Member;
+import com.hana7.springdemo.jpa.entity.MemberImage;
 import com.hana7.springdemo.jpa.entity.QMember;
+import com.hana7.springdemo.jpa.repository.MemberImageRepository;
 import com.hana7.springdemo.jpa.repository.MemberRepository;
 import com.querydsl.core.BooleanBuilder;
 
@@ -18,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class MemberDAOImpl implements MemberDAO {
 	private final MemberRepository repository;
+	private final MemberImageRepository memberImageRepository;
 
 	@Override
 	public List<Member> findAll(SearchCond searchCond) {
@@ -47,6 +51,12 @@ public class MemberDAOImpl implements MemberDAO {
 	@Override
 	public int remove(long id) {
 		return repository.removeById(id);
+	}
+
+	@Override
+	@Transactional
+	public void saveAll(List<MemberImage> list) {
+		memberImageRepository.saveAll(list);
 	}
 
 }

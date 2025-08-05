@@ -2,6 +2,8 @@ package com.hana7.springdemo.jpa.repository;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.stream.Stream;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Commit;
@@ -9,12 +11,27 @@ import org.springframework.util.StringUtils;
 
 import com.hana7.springdemo.board.dto.SearchCond;
 import com.hana7.springdemo.jpa.entity.Member;
+import com.hana7.springdemo.jpa.entity.MemberImage;
 import com.hana7.springdemo.jpa.entity.QMember;
 import com.querydsl.core.BooleanBuilder;
 
 class MemberRepositoryTest extends RepositoryTest {
 	@Autowired
 	MemberRepository repository;
+
+	@Test
+	void imageTest() {
+		Member mbr = repository.findById(1L).orElseThrow();
+		Stream.iterate(1, n -> n + 1).limit(5).map(n -> MemberImage.builder()
+			.orgName("orgname" + n)
+			.saveName("savename" + n)
+			.saveDir("2025/08/05")
+			.member(mbr)
+			.build()
+		).toList();
+
+		mbr.setImages(image)
+	}
 
 	@Test
 	void saveTest() {

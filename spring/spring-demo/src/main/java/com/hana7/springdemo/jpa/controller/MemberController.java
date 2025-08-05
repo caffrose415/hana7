@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import net.coobird.thumbnailator.Thumbnailator;
@@ -53,7 +55,7 @@ public class MemberController {
 	@Tag(name = "file upload")
 	@Operation(summary = "Upload POST Member")
 	@PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-	public List<UploadResponseDTO> upload(UploadRequestDTO dto) {
+	public List<UploadResponseDTO> upload(@RequestParam("memberId") long memberId, UploadRequestDTO dto) {
 		log.info("upfileDto={}", dto);
 		log.info("uploadPath={}", uploadPath);
 
@@ -64,25 +66,29 @@ public class MemberController {
 				log.info("orgName={}", orgFname + "::" + file.getSize() / 1024);
 				String uuid = UUID.randomUUID().toString();
 				String savedFname = uuid + "_" + orgFname;
-				Path upfilePath = Paths.get(uploadPath, savedFname);
+
 				try {
-					Path uploadDir = Paths.get(uploadPath);
+					Path uploadDir = getTodayPath(uploadPath);
 					if (!Files.exists(uploadDir)) {
 						Files.createDirectories(uploadDir);
 					}
+					Path upfilePath = uploadDir.resolve(savedFname);
 					file.transferTo(upfilePath);
 
 					boolean isImage = Files.probeContentType(upfilePath).startsWith("image");
+					String thumbnailName = null;
 					if (isImage) {
-						File thumbnail = new File(uploadPath, "thumb_" + uuid + "_" + orgFname);
+						thumbnailName = "thumb_" + savedFname;
+						File thumbnail = new File(uploadDir.toFile(), thumbnailName);
 						Thumbnailator.createThumbnail(upfilePath.toFile(), thumbnail, 200, 200);
-
 					}
 
 					upfiles.add(UploadResponseDTO.builder()
 						.orgFname(orgFname)
 						.fname(savedFname)
 						.isImage(isImage)
+						.saveDir(getToday())
+						.thumbnailName(thumbnailName)
 						.build()
 					);
 
@@ -92,8 +98,19 @@ public class MemberController {
 				}
 			});
 		}
-
+		service.save(memberId, upfiles);
 		return upfiles;
+	}
+
+	private Path getTodayPath(String basePath) {
+		LocalDateTime now = LocalDateTime.now();
+		String datePath = String.format("%04d/%02d/%02d", now.getYear(), now.getMonthValue(), now.getDayOfMonth());
+		return Paths.get(basePath, datePath);
+	}
+
+	private String getToday() {
+		LocalDateTime now = LocalDateTime.now();
+		return String.format("%04d/%02d/%02d", now.getYear(), now.getMonthValue(), now.getDayOfMonth());
 	}
 
 	@Tag(name = "Download File")

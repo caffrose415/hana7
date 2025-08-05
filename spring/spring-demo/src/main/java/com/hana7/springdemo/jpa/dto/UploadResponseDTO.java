@@ -9,6 +9,8 @@ public class UploadResponseDTO {
 	private String orgFname;
 	private String fname;
 	private boolean isImage;
+	private String saveDir;
+	private String thumbnailName;
 
 	public String getLink() {
 		if (isImage) {

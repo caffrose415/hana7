@@ -59,6 +59,9 @@ public class Member extends BaseEntity {
 
 	@OneToMany(mappedBy = "writer")
 	private List<Board> boards = new ArrayList<>();
+	
+	@OneToMany(mappedBy = "member")
+	private List<MemberImage> memberImages = new ArrayList<>();
 
 	public List<Board> getBoards() {
 		if (this.boards == null) {
