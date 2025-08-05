@@ -7,6 +7,8 @@ scr/main/generated
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
+src/main/resources/static/tmp
+src/main/resources/static/upload
 
 ### STS ###
 .apt_generated
