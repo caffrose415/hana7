@@ -6,20 +6,27 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import com.hana7.springdemo.security.JwtAuthenticationFilter;
+import com.hana7.springdemo.security.handler.LoginFailureHandler;
+import com.hana7.springdemo.security.handler.LoginSuccessHandler;
 
 import lombok.extern.log4j.Log4j2;
 
 @Configuration
 @Log4j2
+@EnableMethodSecurity
 public class CustomSecurityConfig {
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -27,9 +34,17 @@ public class CustomSecurityConfig {
 		System.out.println("** SecurityConfig.filgerChain");
 
 		http
+			// .httpBasic(AbstractHttpConfigurer::disable)
 			.csrf(AbstractHttpConfigurer::disable)
 			.cors(config -> config.configurationSource(corsConfigurationSource()))
-			.sessionManagement(config -> config.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+			.sessionManagement(config -> config.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+			.formLogin(form -> form
+				.loginPage("/api/subscriber/login")
+				// .loginProcessingUrl("/api/subscriber/login")
+				.successHandler(new LoginSuccessHandler())
+				.failureHandler(new LoginFailureHandler())
+			)
+			.addFilterBefore(new JwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
 		return http.build();
 	}
