@@ -19,6 +19,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.hana7.springdemo.security.JwtAuthenticationFilter;
+import com.hana7.springdemo.security.handler.CustomAccessDeiniedHandler;
 import com.hana7.springdemo.security.handler.LoginFailureHandler;
 import com.hana7.springdemo.security.handler.LoginSuccessHandler;
 
@@ -44,6 +45,7 @@ public class CustomSecurityConfig {
 				.successHandler(new LoginSuccessHandler())
 				.failureHandler(new LoginFailureHandler())
 			)
+			.exceptionHandling(config -> config.accessDeniedHandler(new CustomAccessDeiniedHandler()))
 			.addFilterBefore(new JwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
 		return http.build();

@@ -35,7 +35,7 @@ public class SubscriberDTO extends User {
 		Map<String, Object> map = new HashMap<>();
 		map.put("email", email);
 		map.put("nickname", nickname);
-		// map.put("pwd", pwd);
+		map.put("pwd", pwd);
 		map.put("social", social);
 		map.put("roleNames", roleNames);
 
