@@ -40,3 +40,12 @@ password = pwd00x
 ### textbook
 POST {{baseUrl}}/api/subscriber/login?username=sample@gmail.com&password=pwd00
 #Content-Type: application/x-www-form-urlencoded
+
+
+### langs
+GET {{baseUrl}}/api/public/langs
+
+### set-langs
+POST {{baseUrl}}/api/public/setlang
+Content-Type: application/json
+Accept-Language: zh
