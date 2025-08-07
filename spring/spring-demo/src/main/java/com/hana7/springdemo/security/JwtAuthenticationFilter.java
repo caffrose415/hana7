@@ -40,11 +40,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	@Override
 	protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response,
 		@NonNull FilterChain filterChain) throws ServletException, IOException {
-		System.out.println("** JwtAuthenticationFilter.doFilterInternal");
 		String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
 		try {
+			System.out.println("** JwtAuthenticationFilter.doFilterInternal:" + authHeader.substring(7));
 			Map<String, Object> claims = JwtUtil.validateToken(authHeader.substring(7));
+			System.out.println("claims = " + claims);
 		} catch (Exception e) {
+			e.printStackTrace(System.out);
 			response.setContentType("application/json");
 			ObjectMapper objectMapper = new ObjectMapper();
 			PrintWriter out = response.getWriter();

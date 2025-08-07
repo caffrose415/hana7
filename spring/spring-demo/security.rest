@@ -1,6 +1,5 @@
-@baseUrl=http://localhost:8080
-###
-GET {{baseUrl}}/members
+@baseUrl=http://localhost:8081
+
 
 ### login - success
 POST {{baseUrl}}/api/subscriber/login
@@ -8,6 +7,14 @@ Content-Type: application/x-www-form-urlencoded
 
 username = sample@gmail.com &
 password = pwd00
+
+> {%
+    client.global.set("auth_token", response.body.accessToken);
+%}
+
+###
+GET {{baseUrl}}/members
+Authorization: Bearer {{auth_token}}
 
 ### login - failure
 POST {{baseUrl}}/api/subscriber/login

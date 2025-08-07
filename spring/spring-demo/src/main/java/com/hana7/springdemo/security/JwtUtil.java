@@ -14,16 +14,17 @@ import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.WeakKeyException;
 
 public class JwtUtil {
-	private static final String KEY = "1234567890123456789012345678901234567890";
+	private static final SecretKey K = Keys.hmacShaKeyFor("yek".getBytes(StandardCharsets.UTF_8));
 
 	public static String generateToken(Map<String, Object> valueMap, int min) {
-		SecretKey key = Keys.hmacShaKeyFor(JwtUtil.KEY.getBytes(StandardCharsets.UTF_8));
+		// SecretKey key = Keys.hmacShaKeyFor(KEY.getBytes(StandardCharsets.UTF_8));
+		// SecretKey key = Keys.hmacShaKeyFor(JwtUtil.KEY.getBytes());
 
 		String jwtStr = Jwts.builder().setHeader(Map.of("typ", "JWT"))
 			.setClaims(valueMap)
 			.setIssuedAt(Date.from(ZonedDateTime.now().toInstant()))
 			.setExpiration(Date.from(ZonedDateTime.now().plusMinutes(min).toInstant()))
-			.signWith(key).compact();
+			.signWith(K).compact();
 		System.out.println("jwtStr = " + jwtStr);
 		return jwtStr;
 	}
@@ -33,9 +34,12 @@ public class JwtUtil {
 		SecretKey key = null;
 
 		try {
-			key = Keys.hmacShaKeyFor(JwtUtil.KEY.getBytes(StandardCharsets.UTF_8));
-			claim = Jwts.parserBuilder().setSigningKey(key)
-				.build().parseClaimsJwt(token).getBody();
+			// key = Keys.hmacShaKeyFor(JwtUtil.KEY.getBytes(StandardCharsets.UTF_8));
+			// key = Keys.hmacShaKeyFor(JwtUtil.KEY.getBytes());
+			claim = Jwts.parserBuilder()
+				.setSigningKey(K)
+				.build()
+				.parseClaimsJws(token).getBody();
 		} catch (WeakKeyException e) {
 			throw new CustomJwtException("WeakException");
 		}
